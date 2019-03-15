@@ -32,6 +32,13 @@
                     </mu-slide-top-transition>   
      	  	  	 	  </div>
                   </mu-fade-transition>  
+
+             <!--进度条-->
+                  <van-popup v-model="show">
+                  	   <div class="logins"><div :style="{width:progress+'%'}" class="loginss"><div>{{progress}}%</div></div></div>
+                  </van-popup>	   	   
+                  	   
+                  
                 <!--------------------------------------------------------->  
      	  	  	 </div>
      	  	  	 
@@ -75,23 +82,23 @@
      	  	  
      	  	  <div v-else>
      	  	  	
-     	  	  	 <div class="video_tab_box" v-for="i in 5">
-     	  	  	 	  <p class="video_ps">上传日期：2019-03-08  22:21:32</p>
+     	  	  	 <div class="video_tab_box" v-for="(i,index) in video_boxs">
+     	  	  	 	  <p class="video_ps">上传日期：{{i.createDate}}</p>
      	  	  	 	  <div class="video_box">
-     	  	  	 	  	  <div @click="go_vdieo" class="video_img_box">
+     	  	  	 	  	  <div @click="go_vdieo(i)" class="video_img_box">
      	  	  	 	  	  	<img id="video_img_box_img2" src="../../../static/img/upimg/bofanganniu.png" alt="" />
-     	  	  	 	  	  	<img id="video_img_box_img1" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1800442878,3200333987&fm=27&gp=0.jpg" alt="" />
+     	  	  	 	  	  	<img id="video_img_box_img1" :src="'http://video-mp.cieo.com.cn/'+i.image" alt="" />
      	  	  	 	  	  </div>
      	  	  	 	  	  <div class="video_p_box">
-     	  	  	 	  	  	  <p class="name_p">王小五</p><div class="name_hao">23441号</div>
-     	  	  	 	  	  	  <p class="text_p">剑桥郡外国语言学校</p>
+     	  	  	 	  	  	  <p class="name_p">{{i.user}}</p><div class="name_hao">{{i.id}}号</div>
+     	  	  	 	  	  	  <p class="text_p">{{i.school}}</p>
      	  	  	 	  	  	  <div class="piao_shu"><img src="../../../static/img/upimg/piaoshu.png"/>
-     	  	  	 	  	  	     <p>83485票</p>
+     	  	  	 	  	  	     <p>{{i.votes}}票</p>
      	  	  	 	  	  	  </div>
      	  	  	 	  	  </div>
      	  	  	 	  	  <div class="video_btn_box">
-     	  	  	 	  	  	  <div style="background:#FF6F7A;margin-bottom: 0.426666rem;">投票(+1)</div>
-     	  	  	 	  	  	  <div style="background:#4DB1E5;">大力支持(+10)</div>
+     	  	  	 	  	  	  <div @click="zhici(i,1)" style="background:#FF6F7A;margin-bottom: 0.426666rem;">投票(+1)</div>
+     	  	  	 	  	  	  <div @click="zhici(i,10)" style="background:#4DB1E5;">大力支持(+10)</div>
      	  	  	 	  	  </div> 
      	  	  	 	  </div>
      	  	  	 </div>
@@ -103,7 +110,7 @@
         <van-picker
             show-toolbar
             title="请选择赛区"
-            :columns="columns"
+            :columns="columns_a"
             @cancel="show1=false"
             @confirm="onConfirm"
           />
@@ -140,13 +147,39 @@
           	   <mu-scale-transition>
                   <div class="ok_box" v-show="show5">
                   	 <img class="ok_box_img1" src="../../../static/img/upimg/erweima.png" alt="" />
-                  	 <div class="ppp">恭喜您参赛成功，您的参赛编号是<a>231</a>号</div>
-                  	 <div @click="git_home" class="ok_box_btn">我知道了</div>
+                  	 <div class="ppp">恭喜您参赛成功，您的参赛编号是<a>{{hao}}</a>号</div>
+                  	 <div @click="show5=false" class="ok_box_btn">我知道了</div>
                   	 <img @click="show5=false" class="ok_box_img2" src="../../../static/img/upimg/guanbi (1).png"/>
                   </div>
               </mu-scale-transition>
           </div>
     </mu-fade-transition>
+    
+    <!--支持成功/失败--->  
+     <mu-fade-transition>
+          <div @touchmove.prevent class="iphone_ss" v-show="show6">
+          	   <mu-scale-transition>
+                  <div class="ok_box" v-show="show6">
+                  	<!--已经支持过了-->
+                  	 <div v-if="show5_s==false">
+                  	   <img class="ok_box_img1_s" src="../../../static/img/xin/guanwang.png" alt="" />
+                  	   <div class="ppps">您今天已对当前视频投过票了，请明天再来~</div>
+                  	   <div @click="git_home" class="ok_box_btn">看看其他</div>
+                  	 </div> 
+                  	 <!--支持成功-->
+                  	 <div v-else>
+                  	   <div class="er"><img src="../../../static/img/xin/_20190315143519.png" alt="" /></div>
+                  	   <div class="ppp">支持成功,关注官方公众号惊喜不断哦~</div>
+                  	 </div> 
+                  	 <img @click="show6=false" class="ok_box_img2" src="../../../static/img/upimg/guanbi (1).png"/>
+                  </div>
+              </mu-scale-transition>
+          </div>
+     </mu-fade-transition> 
+    
+    <div class="xuan_xiang_box_c"></div>
+    
+    <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
     
   </div>
 </template>
@@ -158,11 +191,20 @@ import router from '../../router/index.js'
 import { ImagePreview } from 'vant';
 import axios from 'axios'
 import upload from '../../../static/js/upload.js'
+import { Notify } from 'vant';
 export default {
   
   data(){
     return {
+    	show5_s:true,
+    	
+    	show1s:false,
+    	
+    	progress:0,
+    	show:false,
+    	
     	show5:false,
+    	show6:false,
     	
     	names:'',
     	iphones:'',
@@ -178,11 +220,15 @@ export default {
     	 video_img_file:'',
     	  
     	 xiaoqu:'请选择校区',
-    	 columns_s: ['雅居乐', '剑桥郡', '金山谷'],
+    	 columns_s:[],
+    	 xiao_id:'',
+    	 
     	 show2:false,
     	
     	 saiqu:'请选择赛区',
-    	 columns: ['杭州', '宁波', '温州', '嘉兴', '湖州'],
+    	 columns: [],
+    	 columns_a:[],//选择展示
+    	 sai_id:'',
     	 show1:false,
     	
     	
@@ -192,15 +238,79 @@ export default {
     	 bofang_sw:false,
     	 video_file:'',//上视频之后视频文件存储
     	 
+    	 hao:0,
     	 
+    	 video_boxs:[],
+    	 
+    	 xinxi:0,
     }
   },
   methods:{
-  	
-  	go_phone(){//完善信息
-  		  axios.get('perfect?token='+localStorage.token+'&name='+this.names+'&tel='+this.iphones
+  	zhici(i,index){
+  		 if(this.xinxi==0){//未绑定手机号
+  		 	   this.show4=true;
+  		 }else{
+  		 	   var a = index==10?10:''
+  		 	   axios.get('vote?token='+localStorage.token+'&id='+i.id+'&support='+a
         	    ).then(res=>{
         	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	 console.log(res.data,'投票');
+        	    	 	  	  this.show6 = true;
+        	    	 	  	 if(res.data.status==0){
+		 	                      this.show5_s=true;//支持成功=true/支持失败=false;
+		 	                      this.hel_click(1);
+        	    	 	  	 }else if(res.data.status==106){
+        	    	 	  	 	    this.show5_s=false;
+        	    	 	  	 }
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err)
+              }); 
+  		   }
+  	},
+  	
+  	git_shai(){//获取赛区
+  		 axios.get('getAreaSchool?token='+localStorage.token
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	 console.log(res.data,'赛区');
+        	    	 	  	 this.columns = res.data.data;
+        	    	 	  	 for(var i=0;i<this.columns.length;i++){
+        	    	 	  	 	  this.columns_a.push(this.columns[i].label);
+        	    	 	  	 }
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err)
+              }); 
+  	 },
+  	
+  	go_phone(){//完善信息
+  		 axios({
+            method:"post",
+            url:"perfect",
+            contentType:"application/json;charset=UTF-8",
+            dataType:"json",
+            data:{
+                 tel:this.iphones,
+                 name:this.names,
+                 token:localStorage.token
+             }
+            }).then(res=>{
+            	    if(res.status = 200){
         	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
         	    	 	  	  localStorage.token = '';
         	    	 	  	  router.push({
@@ -210,16 +320,27 @@ export default {
         	    	 	  	 console.log(res.data.data);
         	    	 	  	 if(res.data.data=='请求成功'){
         	    	 	  	 	   this.show4 = false;
+        	    	 	  	 	   this.xinxi=1
         	    	 	  	 	   this.$toast({
         	                       message:'成功绑定信息',
         	                       duration:1000
         	                 });
         	    	 	  	 }
         	    	 	  }
-        	    	 }
-                }).catch(err=>{
-                	 console.log(err)
-              }); 
+        	    	 }  
+             }).catch(err=>{
+                      console.log(err);
+                       this.$toast({
+        	                       message:'网络错误',
+        	                       duration:3000
+        	                 });
+             });
+//		  axios.get('perfect?token='+localStorage.token+'&name='+this.names+'&tel='+this.iphones
+//      	    ).then(res=>{
+//      	    	 
+//              }).catch(err=>{
+//              	 console.log(err)
+//            }); 
   	},
   	git_iphone(){//检测用户是否完善信息
   		 axios.get('isPerfect?token='+localStorage.token
@@ -233,18 +354,21 @@ export default {
         	    	 	  }else{
         	    	 	  	console.log(res.data);
         	    	 	  	this.show4 = res.data.data==0?true:false;
+        	    	 	  	this.xinxi = res.data.data==0?0:1;
         	    	 	  }
         	    	 }
                 }).catch(err=>{
                 	 console.log(err)
+                	 this.$toast({message:'网络错误',duration:3000});
               }); 
   	},
   	
-  	go_vdieo(){
+  	go_vdieo(i){
+  		 localStorage.video_id = i.id;
   		 router.push({
   	   	  path:'./Video_details',
   	   });
-  	   window.location.reload()
+  	   window.location.reload();
   	},
   	
   	git_home(){
@@ -267,10 +391,49 @@ export default {
       window.scrollTo(0,0);  
   	},
   	que_click(){//确认上传
-  		
 		 if(this.video_file!=''&&this.saiqu!='请选择赛区'&&this.xiaoqu!='请选择校区'&&this.video_img_file!=''&&this.inp_val!=''&&this.text_val!=''){
-         
-         this.show5 = true
+         this.show1s = true
+         axios({
+            method:"post",
+            url:"user/createVideo",
+            contentType:"application/json;charset=UTF-8",
+            dataType:"json",
+            data:{
+                 token:localStorage.token,
+                 video:this.video_file,
+                 img:this.video_img_file,
+                 areaid:this.sai_id,//赛区
+                 schoolid:this.xiao_id,
+                 title:this.inp_val,
+                 content:this.text_val,
+             }
+            }).then(res=>{
+            	    if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else if(res.data.status==0){//添加视频成功
+        	    	 	  	  console.log(res.data);
+        	    	 	  	  this.show1s = false;
+        	    	 	  	  this.hao=res.data.data;
+        	    	 	  	  this.show5 = true;
+        	    	 	  	  this.del_img();
+        	    	 	  	  this.del_video();
+        	    	 	  	  this.inp_val='';
+        	    	 	  	  this.text_val='';
+        	    	 	  	  this.hel_click(1);
+        	    	 	  }else{
+        	    	 	  	  this.$toast({message:'网络错误',duration:3000});
+        	    	 	  	  console.log(res)
+        	    	 	  	  
+        	    	 	  }
+        	    	 }  
+             }).catch(err=>{
+                       console.log(err);
+                       this.$toast({message:'网络错误',duration:3000});
+             });
          
 		 }else{
 		 	  this.$toast({
@@ -283,14 +446,35 @@ export default {
   	
   	hel_click(i){
   		this.hel_tab_sw=i;
-  		
-  		this.class_show = i==1?false:true;
-  		
+  		if(i==1){//获取以上穿的视频
+  			 this.show1s = true
+  			 axios.get('user/getVideos?token='+localStorage.token
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	  console.log(res.data,'已上传的视频');
+        	    	 	  	  this.video_boxs = res.data.data.reverse();
+        	    	 	  	  this.class_show = this.video_boxs.length>3?false:true;
+        	    	 	  	  this.show1s = false
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+              }); 
+  		}else{
+  			 this.class_show = i==1?false:true;
+  		}
   		
   	},
   	img_box(){//放大查看图片
   		 var a = [];
-  		 a.push(this.video_img_file.content);
+  		 a.push(this.img_file);
   		 ImagePreview(a);
   	},
   	
@@ -302,60 +486,92 @@ export default {
   	
   	onRead(file){//确定选择图片
   		 console.log(file);
-  		 this.video_img_file = file;
-  		 this.img_file = file.content;
-  		 this.inp_show = false;
+  		 
+  		 var aaa = new upload(file.file);
+        aaa.setApi("/wechat/api/uploadVideo");
+        aaa.setChunkCallBack(rs=>{
+              console.log(rs,'1111');
+              this.show1s = true
+        }).setFinishCallBack(res=>{
+              if(res.status==200){
+              	     console.log(res);
+              	     this.show1s = false;
+              	     this.video_img_file = res.id;
+  		               this.img_file = 'http://video-mp.cieo.com.cn/'+res.path;
+  		               this.inp_show = false;
+                  }
+              });
+          aaa.startUpload();
+  		 
   	},
   	
-  	onConfirm_s(value, index) {
+  	onConfirm_s(value, index) {//选择校区
       this.xiaoqu = value;
-      this.show2 = false
+      this.show2 = false;
+      
+      for(var i=0;i<this.columns.length;i++){
+      	    if(this.columns[i].value==this.sai_id){
+      	    	 this.xiao_id = this.columns[i].children[index].value;
+      	    	 break;
+      	    }
+      }
+      console.log(this.xiao_id)
+      
     },
   	
-  	onConfirm(value, index) {
+  	onConfirm(value,index) {
       this.saiqu = value;
-      this.show1 = false
+      this.show1 = false;
+      this.columns_s = [];
+      for(var i=0;i<this.columns[index].children.length;i++){
+      	  this.columns_s.push(this.columns[index].children[i].label);
+      }
+      this.sai_id = this.columns[index].value;
+      console.log(this.sai_id);
     },
   	
   	
   	del_video(){//删除视频
   		 this.video_file = '';
   		 this.bofang_sw = false;
-  		 this.$toast.success({message:'删除成功',time:'400'});
+//		 this.$toast.success({message:'删除成功',time:'400'});
   		 this.$refs.video.src = '';
   	},
   	onFileChange(e){//穿入视频
   		 var files = e.target.files || e.dataTransfer.files;
         if (!files.length) return;
         //视频上传
-        console.log(files)
-        let _this = this;
-         
+        console.log(files,'视频')
+        
+        let _this = this;
         var aaa = new upload(files[0]);
         aaa.setApi("/wechat/api/uploadVideo");
         aaa.setChunkCallBack(rs=>{
-               console.log(rs,'1111');
+              console.log(rs,'1111');
+              this.show = true;
+              this.progress = parseInt((rs.totalSize/files[0].size)*100);
+              console.log(this.progress)
         }).setFinishCallBack(res=>{
               if(res.status==200){
+              	this.progress = 0;
+              	this.show = false;
               	console.log(res)
               	 //视频预览
               	 var reader = new FileReader();
               	 this.file = files[0];
-              	 this.video_file = res.isLastChunk;
-              	 
+              	 this.video_file = res.id;
               	 reader.onload = function(){
-                 	  _this.$refs.video.src = this.result;
+                 	  _this.$refs.video.src = 'http://video-mp.cieo.com.cn/'+res.path;
               	 };
-
               	 reader.readAsDataURL(this.file);
-
               	 this.bofang_sw = true;
-        
-              	 this.$toast.success({message:'上传视频成功',time:'400'})
-              	 
-                    }
-              	 });
-              	 
+              	  Notify({
+                     message: '上传成功',
+                    duration: 1000,
+                    background: '#1989fa'
+                   });
+                  }
+              });
           aaa.startUpload();
         
   	},
@@ -365,7 +581,7 @@ export default {
   mounted(){
   	  
   	  this.git_iphone();//检测是否完善信息
-  	
+  	  this.git_shai()
   	  store.state.btn_show = true;
   	  store.state.bottom_1 = false;store.state.bottom_2 = false;store.state.bottom_3 = true;
   	  window.scrollTo(0,0);  
@@ -378,6 +594,55 @@ export default {
 </script>
 
 <style scoped>
+	.ppps{
+		 width: 5.973333rem;
+		 height: 1.333333rem;
+		 font-size:0.426666rem;
+		 color:#BABABA;
+		 margin: auto;
+		 text-align: center;
+		 margin-top: 0.4rem;
+	}
+	.ok_box_img1_s{
+		 width:3.386666rem;
+		 height:2.386666rem;
+		 margin:0 2.653333rem;
+	}
+	.er img{
+		 width: 100%;
+		 height: 100%;
+	}
+	.er{
+		width: 2.613333rem;
+		height: 2.613333rem;
+		margin: 0.5rem auto 0.7rem auto;
+		background: #000000;
+		color: white;
+	}
+	.loginss div{
+		 width:0.8rem;
+		 height: 100%;
+		 background:#FF6F7A;
+		 border-radius: 0.4rem;
+		 line-height: 0.8rem;
+		 text-align: center;
+		 float: right;
+		 font-size: 0.23rem;
+		 color: white;
+	}
+	.loginss{
+		height: 100%;
+		/*width: 1.333333rem;*/
+		border-radius: 0.4rem;
+		background:#F8515E;
+	}
+	.logins{
+		width: 4.666666rem;
+		height: 0.8rem;
+		border-radius: 0.4rem;
+		background: white;
+		border:0.04rem solid #4DB1E5;
+	}
 	.ok_box_img2{
 		width: 1.013333rem;
 		height: 1.013333rem;
@@ -732,6 +997,9 @@ line-height: 0.48rem;
 		 line-height: 0.853333rem;
 		 font-size: 0.333333rem;
 		 color: #BABABA;
+		  overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
 	}
 	.xiao_qu_box_box_c img{
 		width: 0.306666rem;

@@ -10,53 +10,57 @@
       <img class="top_img" src="../../../static/img/banner.png" alt="" />
       
       <div class="img_box"><img src="../../../static/img/laba.png" alt="" />
-         <p>活动倒计时：<a>10</a>天<a>21</a>时<a>30</a>分<a>50</a>秒</p></div>
-      
+         <p v-if="isEnd==false">活动倒计时：<a>{{shi.d}}</a>天<a>{{shi.h}}</a>时<a>{{shi.m}}</a>分<a>{{shi.s}}</a>秒</p>
+         <p v-else>活动已结束</p>
+      </div>
+            
       <div class="yin"> 
       	  <div class="yin_box">
       	  	  <div class="yin_box_c"><img src="../../../static/img/shipin.png" />
       	  	     <p style="font-size:0.333333rem;margin-bottom:0.133333rem;">视频量</p>
-      	  	     <p style="font-size:0.426666rem;">3432523</p>
+      	  	     <p style="font-size:0.426666rem;">{{index_box.video}}</p>
       	  	  </div>
       	  	  <div class="shu"></div>
       	  	   <div class="yin_box_c"><img src="../../../static/img/zongtoupiao.png" />
       	  	     <p style="font-size:0.333333rem;margin-bottom:0.133333rem;">总投票</p>
-      	  	     <p style="font-size:0.426666rem;">3432523</p>
+      	  	     <p style="font-size:0.426666rem;">{{index_box.vote}}</p>
       	  	  </div>
       	  	  <div class="shu"></div>
       	  	  <div class="yin_box_c"><img style="height:1.026666rem;margin-bottom:0.32rem;" src="../../../static/img/liulanliang.png" />
       	  	     <p style="font-size:0.333333rem;margin-bottom:0.133333rem;">浏览量</p>
-      	  	     <p style="font-size:0.426666rem;">3432523</p>
+      	  	     <p style="font-size:0.426666rem;">{{index_box.browser}}</p>
       	  	  </div>
       	  </div>
       </div>
       
       <div class="img_box_2">
-      	  <input @blur="inp_show=true" @focus="inp_show=false" type="text" id="inp" />
+      	  <input v-model="inp_val" @blur="git_search" @focus="inp_show=false" type="text" id="inp" />
       	  <img @click="inp_fl" v-show="inp_show" src="../../../static/img/sousuo.png" alt="" /><p @click="inp_fl" v-show="inp_show">搜索学生姓名</p>
       </div>
       
       <div class="yin_s2">
       	  <div class="yin_s2_box">
       	  	  <div class="yin_s2_box_c1">
-      	  	  	  <div @click="btn_click(0)" class="yin_s2_box_c1_ch" :class="{yin_cas:show_btn==0}">推荐</div>
+      	  	  	  <div @click="btn_click(0,'')" class="yin_s2_box_c1_ch" :class="{yin_cas:show_btn==0}">推荐</div>
       	  	  	    <div class="xina_shu"></div>
-      	  	  	  <div @click="btn_click(1)" class="yin_s2_box_c1_ch2" :class="{yin_cas:show_btn==1}" style="">外国语言赛区</div>
+      	  	  	 <div v-if="columns!=''">  
+      	  	  	  <div @click="btn_click(1,columns[0])" class="yin_s2_box_c1_ch2" :class="{yin_cas:show_btn==1}" style="">{{columns[0].label}}</div>
       	  	  	    <div class="xina_shu"></div>
-      	  	  	  <div @click="btn_click(2)" class="yin_s2_box_c1_ch2" :class="{yin_cas:show_btn==2}" style="">学前教育赛区</div>
+      	  	  	  <div @click="btn_click(2,columns[1])" class="yin_s2_box_c1_ch2" :class="{yin_cas:show_btn==2}" style="">{{columns[1].label}}</div>
       	  	  	    <div class="xina_shu"></div>
-      	  	  	  <div @click="btn_click(3)" class="yin_s2_box_c1_ch2" :class="{yin_cas:show_btn==3}" style="">少儿英语培训赛区</div>
+      	  	  	  <div @click="btn_click(3,columns[2])" class="yin_s2_box_c1_ch2" :class="{yin_cas:show_btn==3}" style="">{{columns[2].label}}</div>
+      	  	     </div> 
       	  	  </div>
       	  	  <div class="xian"></div>
       	  	  
       	  	   <div class="xuan_xiang_box">
       	  	   	
-      	  	   	 <div v-for="(i,index) in 6" class="xuan_xiang_box_c" @click="go_vdet">
-      	  	   	 	  <div class="img_box_s"><img src="http://img2.imgtn.bdimg.com/it/u=3991096239,1179572883&fm=26&gp=0.jpg"/>
-      	  	   	 	    <div class="img_btn">231号</div></div>
-      	  	   	 	  <p class="names">陈立农</p>
-      	  	   	 	  <p class="xuexiao">剑桥郡金山谷学校</p>
-      	  	   	 	  <p class="p_img"><img src="../../../static/img/aixin.png" /> &nbsp;<a>243245票</a></p>
+      	  	   	 <div v-for="(i,index) in active_box" class="xuan_xiang_box_c" @click="go_vdet(i)">
+      	  	   	 	  <div class="img_box_s"><img :src="'http://video-mp.cieo.com.cn/'+i.image"/>
+      	  	   	 	    <div class="img_btn">{{i.number}}号</div></div>
+      	  	   	 	  <p class="names">{{i.user}}</p>
+      	  	   	 	  <p class="xuexiao">{{i.school}}</p>
+      	  	   	 	  <p class="p_img"><img src="../../../static/img/aixin.png" /> &nbsp;<a>{{i.votes}}票</a></p>
       	  	   	 </div>
       	  	   	
       	  	   </div>
@@ -64,7 +68,7 @@
       	  </div>
       </div>
       
-      
+      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
       
   </div>
 </template>
@@ -78,12 +82,187 @@ export default {
   store,
   data () {
     return {
+    	show1s:false,
     	inp_show:true,
     	show_btn:0,
+    	index_box:'',//基础信息
+    	shi:{
+    		d:0,h:0,m:0,s:0
+    	},
+    	isEnd:false,
+    	
+    	page:1,//页数
+    	limit:10,//条数
+    	inp_val:'',
+    	active_box:'',
+    	
+    	columns:'',//赛区
+    	
+    	columns_val:'',//临时存储赛区id
+    	
+    	act_edl:0,//0=推荐视频/1=搜索视频/2=赛区筛选视频
     	
     }
   },
+  computed:{
+  	   
+  },
+  
+  created(){
+		 let that = this;
+		 that.setEndTime();
+	 },
+  
+  
   methods:{
+  	
+  	handleScroll () {
+//           if(this.active_box.length>2){
+              var aer = document.getElementsByClassName('xuan_xiang_box_c')
+              var window_top = document.documentElement.clientHeight
+              var btnheight = Math.trunc(aer[aer.length-1].getBoundingClientRect().bottom)
+             
+              
+             	if(btnheight<window_top){
+             		 
+             		 console.log(777777777777777777777777777)
+             		 
+             	   this.page=this.page+1;
+             if(this.act_edl!=0){
+             	   console.log(btnheight,'----------',window_top);
+//           	 	this.show1s = true;
+             	 	var rul = this.act_edl==1?'search':(this.act_edl==2?'areaVideo':'');
+  			       axios.get(rul+'?token='+localStorage.token+'&name='+this.inp_val+'&page='+this.page+'&limit='+this.limit+'&areaid='+this.columns_val.value
+        	      ).then(res=>{
+        	    	  if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  this.git_token();
+        	    	 	  }else{
+        	    	 	  	  console.log(res.data,'分页视频');
+//      	    	 	  	  this.show1s = false;
+        	    	 	  	  if(res.data.data.length>0){
+        	    	 	  	  	for(var i=0;i++;i<res.data.data.length){
+        	    	 	  	  	   this.active_box.push(res.data.data[i])
+        	    	 	  	     }
+        	    	 	  	  }
+        	    	 	   }
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+             	 }   
+      	      }
+//           }
+         },
+         destroyed () {//移除页面监听--跳转其他页面务必调用该事件
+           window.removeEventListener('scroll', this.handleScroll)
+         },
+  	
+  	
+  	git_search(){//搜索函数
+  		
+  		if(this.inp_val!=''){
+  			 this.act_edl = 1
+  			 this.show1s = true;
+  			 this.page = 1;
+  			 axios.get('search?token='+localStorage.token+'&name='+this.inp_val+'&page='+this.page+'&limit='+this.limit
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  this.git_token();
+        	    	 	  }else{
+        	    	 	  	  console.log(res.data,'手速视频');
+        	    	 	  	  this.show1s = false;
+        	    	 	  	  this.active_box = res.data.data
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+              });
+  		    }else{
+  		    	       this.inp_show=true
+  		    }
+  	},
+  	
+  	git_recommend(){//获取推荐视频
+  		 this.act_edl = 0
+  		  this.show1s = true
+  			 axios.get('recommend?token='+localStorage.token
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  this.git_token();
+        	    	 	  }else if(res.data.status==0){
+        	    	 	  	  console.log(res.data,'推荐视频');
+        	    	 	  	  this.show1s = false;
+        	    	 	  	  this.active_box = res.data.data
+        	    	 	  }else{
+        	    	 	  	 this.$toast({message:'网络错误',duration:3000});
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+              });
+  	},
+    
+    git_shai(){//获取赛区
+  		 axios.get('getAreaSchool?token='+localStorage.token
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	 console.log(res.data,'赛区');
+        	    	 	  	 this.columns = res.data.data;
+        	    	 	  	 
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err)
+              }); 
+  	  },
+  	
+    
+  setEndTime(){//倒计时函数
+		var that = this;
+		var interval = setInterval(function(){
+		var date = that.index_box.endtime-(new Date().getTime()/1000);
+		if(date == 0){
+			that.isEnd = true;
+		}else{
+			 that.shi.d = parseInt(date / 60 / 60 / 24);
+			 that.shi.h = parseInt(date / 60 / 60 % 24);
+			 that.shi.m = parseInt(date / 60 % 60);//计算剩余的分钟
+	  	 that.shi.s = parseInt(date % 60);//计算剩余的秒数 
+		  }
+	   },1000);
+   },
+
+  	git_index(){//获取基础信息
+//		   this.show1s = true
+  			 axios.get('index?token='+localStorage.token
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  this.git_token();
+        	    	 	  }else{
+        	    	 	  	  console.log(res.data,'基础信息');
+//      	    	 	  	  this.show1s = false;
+        	    	 	  	  this.index_box = res.data.data
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+              }); 
+  	},
+  	
   	git_token(){//微信授权
   		   axios.get('token'
         	    ).then(res=>{
@@ -93,11 +272,14 @@ export default {
         	    	 	   window.location.href = 'http://video-mp.cieo.com.cn/wechat/login?token='+localStorage.token
         	    	 }
                 }).catch(err=>{
-                	console.log(err)
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
               }); 
   	},
   	
-  	go_vdet(){//跳转入作品详情
+  	go_vdet(i){//跳转入作品详情
+  		   window.removeEventListener('scroll', this.handleScroll)
+  		  localStorage.video_id = i.id;
   		  router.push({
   	   	 path:'./Video_details'
   	   });
@@ -108,18 +290,51 @@ export default {
   		document.getElementById('inp').focus()
   	},
   	
-  	btn_click(i){
-  	  	this.show_btn = i 
+  	btn_click(i,val){
+  	  	this.show_btn = i ;
+  	  	if(i==0){
+  	  		 this.act_edl = 0
+  	  		 this.git_recommend();
+  	  	}else{
+  	  		 this.git_areaVideo(val);
+  	  		 this.columns_val = val
+  	  	}
   	},
   	
+  	git_areaVideo(val){//赛区筛选视频
+  		   this.act_edl = 2
+  		   this.show1s = true;
+  		   this.page = 1;
+  			 axios.get('areaVideo?token='+localStorage.token+'&areaid='+val.value+'&page='+this.page+'&limit='+this.limit
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  this.git_token();
+        	    	 	  }else if(res.data.status==0){
+        	    	 	  	  console.log(res.data,'筛选视频');
+        	    	 	  	  this.show1s = false;
+        	    	 	  	  this.active_box = res.data.data
+        	    	 	  }else{
+        	    	 	  	 this.$toast({message:'网络错误',duration:3000});
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+              });
+  	},
   },
   mounted(){
-//	 if(localStorage.token){
-//	 	 console.log(localStorage.token)
-//	 }else{
-//	 	   this.git_token();
-//	 }
-  	  localStorage.token = '65b037f32dc6838e950d683215bafe4e' 
+	 if(localStorage.token&&localStorage.token!=''){
+	 	 console.log(localStorage.token)
+	 }else{
+	 	   this.git_token();
+	 }
+      this.git_index();
+      this.git_recommend();
+      this.git_shai();
+      
+//	  localStorage.token = '65b037f32dc6838e950d683215bafe4e' 
   	
 //	   document.getElementById('hello').style.height = document.documentElement.clientHeight;
   	   this.$store.state.btn_show = true;
@@ -127,6 +342,7 @@ export default {
   	   this.$store.state.bottom_2 = false;
   	   this.$store.state.bottom_3 = false;
 	     window.scrollTo(0,0);  
+	     window.addEventListener('scroll', this.handleScroll)
   }
 }
 
@@ -134,8 +350,7 @@ export default {
 
 <style scoped>
 	.img_btn{
-		width: 1.746666rem;
-		height: 0.72rem;
+		
 		position: absolute;
 		bottom: 0.133333rem;
 		right: 0.133333rem;
@@ -145,6 +360,7 @@ export default {
 		color: white;
 		border-radius:0.16rem;
 		text-align: center;
+		padding:0 0.386666rem;
 	}
 	.p_img a{
 		color: #4DB1E5;
@@ -170,6 +386,10 @@ export default {
 		line-height:0.586666rem;
 		margin-top:0.133333rem;
 		margin-left: 0.32rem;
+		width: 85%;
+		overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
 	}
 	.names{
 		margin-top: 0.213333rem;

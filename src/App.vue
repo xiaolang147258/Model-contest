@@ -63,11 +63,13 @@ export default {
  	  	 router.push({
   	   	 path:'./rule',
   	   });
+  	  
  	  },
  	  btn_c3(){
  	  	router.push({
   	   	 path:'./Upload_video',
   	   });
+  	   
  	  },
  },
  mounted(){

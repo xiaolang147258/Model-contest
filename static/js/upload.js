@@ -61,7 +61,6 @@
                     {
                       this._finishCallBack(rs);
                     }
-
                 } else {
                     ++this._chunk
                     this.uploadfile(false);
@@ -69,7 +68,11 @@
                 }
             }
             else if (rs.status === 500) {
-                this._ErrorCallBack(rs);
+            	
+            	if(this._ErrorCallBack)  this._ErrorCallBack(rs);
+            	
+            	console.log(rs);
+                
             }
           });
           return this;

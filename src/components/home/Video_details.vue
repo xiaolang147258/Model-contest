@@ -7,14 +7,19 @@
   	   <img class="imgs_3" src="../../../static/img/fengye_a.png" alt="" />
   	   <!--<img class="imgs_4" src="../../../static/img/fengye_b.png" alt="" />-->
   	   
-      <video  autoplay="autoplay" id="demo_video" onended="" controls="controls" webkit-playsinline='true' playsinline='true' class="video-js vjs-big-play-centered"></video> 
+      <!--<video  autoplay="autoplay" id="demo_video" onended="" controls="controls" webkit-playsinline='true' playsinline='true' class="video-js vjs-big-play-centered"></video>--> 
+    <div class="video_boxa">
+    	 <img :src="urlsa" alt="" />
+    	 <video id="demo_video" @click.stop class="video"  ref="video" controls="controls" webkit-playsinline='true' playsinline='true'></video> 
+    </div> 
+      
       
       <div class="video_1_box">
       	  <div class="video_1_box_c1">
-      	  	  <div class="video_1_box_c1_p"><p>刘望天 </p><div class="video_1_box_c1_div">23441号</div></div>
-      	  	  <p class="psa">票数 2345票</p>
+      	  	  <div class="video_1_box_c1_p"><p>{{active.user}} </p><div class="video_1_box_c1_div">{{active.id}}号</div></div>
+      	  	  <p class="psa">票数{{active.votes}}票</p>
       	  	  <div class="video_1_box_c1_img"><img src="../../../static/img/upimg/xuexiao.png"/>
-      	  	      <p>外国语言赛区-剑桥郡外国语言学校</p>
+      	  	      <p>{{active.school}}</p>
       	  	  </div>
       	  	  <!--头像-->
       	  	  <div class="img_tou"><img src="../../../static/img/upimg/touxiang.png"/></div>
@@ -22,8 +27,7 @@
       	  <div class="video_1_box_c2">
       	  	 <div class="video_1_box_c2_cq">视频介绍</div>
       	  	 <div class="video_1_box_c2_cq2">
-      	  	 	这个视频是我们班同学3年来辛苦排练出来的，这个视频是我们班同学3年来辛苦排练出来的，
-      	  	 	这个视频是我们班同学3年来辛苦排练出来的，这个视频是我们班同学3年来辛苦排练出来的，
+      	  	 	  {{active.content}}
       	  	 </div>
       	  	 <div class="btn_box">
       	  	  <div @click="zhi_click(1)" style="background:#FF6F7A;float: left;">为他/她投一票(+1)</div>
@@ -62,14 +66,16 @@
                   	 </div> 
                   	 <!--支持成功-->
                   	 <div v-else>
-                  	   <div class="er">二维码</div>
+                  	   <div class="er"><img src="../../../static/img/xin/_20190315143519.png"/></div>
                   	   <div class="ppp">支持成功,关注官方公众号惊喜不断哦~</div>
                   	 </div> 
                   	 <img @click="show5=false" class="ok_box_img2" src="../../../static/img/upimg/guanbi (1).png"/>
                   </div>
               </mu-scale-transition>
           </div>
-    </mu-fade-transition> 
+     </mu-fade-transition> 
+      
+      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
       
   </div>
 </template>
@@ -91,29 +97,150 @@ export default {
     	names:'',
     	iphones:'',
     	
+    	show1s:false,
+    	
+    	active:'',
+    	
+    	urlsa:'',
+    	
+    	xinxi:0,
     }
   },
   methods:{
+  	
+  	git_active(){
+  		  this.show1s = true
+  			 axios.get('getVideo?token='+localStorage.token+'&id='+localStorage.video_id
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	  console.log(res.data.data,'详情数据');
+        	    	 	  	  this.active = res.data.data
+        	    	 	  	  window.setTimeout(()=>{//加载视频
+        	    	 	  	  	 var url = 'http://video-mp.cieo.com.cn/'+this.active.url;
+        	    	 	  	  	 var img = 'http://video-mp.cieo.com.cn/'+this.active.image
+                                   this.$refs.video.src = url;
+                                   this.urlsa = img
+//              	             };
+//                         store.state.video_b_url = url;
+//                         store.state.dat.Initializationone(img,'1');
+                        },100)
+        	    	 	  	  this.show1s = false
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+              }); 
+  	},
   	git_home(){
-  		
   		 router.push({
   	   	 path:'./home',
   	   });
   	},
   	
+  	go_phone(){//完善信息
+  		 axios({
+            method:"post",
+            url:"perfect",
+            contentType:"application/json;charset=UTF-8",
+            dataType:"json",
+            data:{
+                 tel:this.iphones,
+                 name:this.names,
+                 token:localStorage.token
+             }
+            }).then(res=>{
+            	    if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	 console.log(res.data.data);
+        	    	 	  	 if(res.data.data=='请求成功'){
+        	    	 	  	 	   this.show4 = false;
+        	    	 	  	 	   this.xinxi=1;
+        	    	 	  	 	   this.$toast({
+        	                       message:'成功绑定信息',
+        	                       duration:1000
+        	                 });
+        	    	 	  	 }
+        	    	 	  }
+        	    	 }  
+             }).catch(err=>{
+                      console.log(err);
+                       this.$toast({
+        	                       message:'网络错误',
+        	                       duration:3000
+        	                 });
+             });
+ 
+  	},
+  	git_iphone(){//检测用户是否完善信息
+  		 axios.get('isPerfect?token='+localStorage.token
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	console.log(res.data);
+//      	    	 	  	this.show4 = res.data.data==0?true:false;
+        	    	 	  	this.xinxi = res.data.data==0?0:1;
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err)
+                	 this.$toast({message:'网络错误',duration:3000});
+              }); 
+  	},
+  	
+  	
   	zhi_click(i){//用户点击支持按钮
-  		if(i==1){
-  			this.show4 = true;//弹出绑定手机-输入框
-  		}else if(i==10){
-  			this.show5 = true;//弹出-支持结果-提示框
-  			this.show5_s = false;//支持成功=true/支持失败=false
-  			
-  		}
+  		if(this.xinxi==0){//未绑定手机号
+  		 	   this.show4 = true;//弹出绑定手机-输入框
+//		 	   this.show5 = true;//弹出-支持结果-提示框
+//			   this.show5_s = false;//支持成功=true/支持失败=false
+  		 }else{
+  		 	   var a = i==10?10:''
+  		 	   axios.get('vote?token='+localStorage.token+'&id='+localStorage.video_id+'&support='+a
+        	    ).then(res=>{
+        	    	 if(res.status = 200){
+        	    	 	  if(res.data.status==108||res.data.status==107){//检测未登录/登录过期
+        	    	 	  	  localStorage.token = '';
+        	    	 	  	  router.push({
+  	   	                    path:'./home',
+  	                    });
+        	    	 	  }else{
+        	    	 	  	 console.log(res.data,'投票');
+        	    	 	  	  this.show5 = true;
+        	    	 	  	 if(res.data.status==0){
+		 	                      this.show5_s=true;//支持成功=true/支持失败=false;
+		 	                      this.hel_click(1);
+        	    	 	  	 }else if(res.data.status==106){
+        	    	 	  	 	    this.show5_s=false;
+        	    	 	  	 }
+        	    	 	  }
+        	    	 }
+                }).catch(err=>{
+                	 console.log(err)
+              }); 
+  		 }
   	},
   	
   	iphone_bao_cun(){//保存手机号，点击保存
   		 if(this.names!=''&&this.iphones!=''&&this.iphones.length==11){
-  		 	   this.show4 = false  
+//		 	   this.show4 = false  
+           this.go_phone()
   		 }else{
   		 	  this.$toast({
         	      message:'信息有误',
@@ -130,21 +257,39 @@ export default {
   mounted(){
   	  this.$store.state.btn_show = false;
 //	  document.getElementById('hello').style.height = document.documentElement.clientHeight+'px';
-     window.setTimeout(()=>{//加载视频
-        store.state.video_b_url = 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=604482600,1393215599&fm=27&gp=0.jpg';
-        store.state.dat.Initializationone('http://demo-videos.qnsdk.com/movies/qiniu.mp4','1');
-      },100)
+     
       window.scrollTo(0,0);  
       
       let win_height = document.documentElement.clientHeight;
       let hel_height = document.getElementById('hello').clientHeight;
       this.hellos_show = hel_height<win_height?true:false;
       
+      this.git_active();
+      this.git_iphone();
      }
 }
 </script>
 
 <style scoped>
+	.video_boxa img{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 0;
+	}
+	.video_boxa{
+		width: 100%;
+		height: 4.933333rem;
+		position: relative;
+	}
+	
+	
+	.er img{
+		width:100%;
+		height:100%;
+	}
 	.er{
 		width: 2.613333rem;
 		height: 2.613333rem;
