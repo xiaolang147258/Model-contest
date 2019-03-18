@@ -261,8 +261,13 @@ export default {
       window.scrollTo(0,0);  
       
       let win_height = document.documentElement.clientHeight;
-      let hel_height = document.getElementById('hello').clientHeight;
-      this.hellos_show = hel_height<win_height?true:false;
+      let hel_height = document.getElementById('hello');
+      hel_height.style.minHeight = win_height+'px';
+      
+//  window.setTimeout(()=>{
+//  	  this.hellos_show = hel_height<win_height?true:false;
+//  },100)
+      
       
       this.git_active();
       this.git_iphone();

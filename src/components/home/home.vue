@@ -283,7 +283,7 @@ export default {
   		  router.push({
   	   	 path:'./Video_details'
   	   });
-  	   window.location.reload()
+	   window.location.reload()
   	},
   	
   	inp_fl(){
@@ -326,7 +326,7 @@ export default {
   },
   mounted(){
 	 if(localStorage.token&&localStorage.token!=''){
-	 	 console.log(localStorage.token)
+	 	   console.log(localStorage.token)
 	 }else{
 	 	   this.git_token();
 	 }
@@ -334,7 +334,7 @@ export default {
       this.git_recommend();
       this.git_shai();
       
-//	  localStorage.token = '65b037f32dc6838e950d683215bafe4e' 
+//	  localStorage.token = '2c53321185189e3320c83693a48f4b09' 
   	
 //	   document.getElementById('hello').style.height = document.documentElement.clientHeight;
   	   this.$store.state.btn_show = true;
@@ -364,13 +364,11 @@ export default {
 	}
 	.p_img a{
 		color: #4DB1E5;
-		
 	}
 	.p_img{
 		margin-top: 0.133333rem;
 		margin-left: 0.32rem;
 		font-size: 0.32rem;
-		
 	}
 	
 	.p_img img{
@@ -526,7 +524,7 @@ opacity:1;
 	.yin_s2{
 		width: 8.56rem;
 		/*height:6.666666rem;*/
-		margin: auto;
+		margin:0 auto;
 		background: #FFADB4;
 		border-radius:0.266666rem;
 		position: relative;

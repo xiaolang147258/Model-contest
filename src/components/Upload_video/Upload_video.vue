@@ -368,7 +368,7 @@ export default {
   		 router.push({
   	   	  path:'./Video_details',
   	   });
-  	   window.location.reload();
+	   window.location.reload();
   	},
   	
   	git_home(){
