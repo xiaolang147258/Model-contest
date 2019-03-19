@@ -38,6 +38,8 @@ const state = {
 	
 	bottom_3:false,
 	
+	bottom_4:false,
+	
 	btn_show:true,//低部导航栏显示隐藏控制
 	
 	video_id:'',//获取作品详情数据的id
@@ -59,9 +61,7 @@ const state = {
 	 	
 //修改状态
 const mutations = {
-	 del(state){
-	 	 state.cesi == '这个可以，执行完成'?state.cesi='vuex内部执行方法':state.cesi='这个可以，执行完成'
-	 },
+	 
 	 
 	 
 	 	 
