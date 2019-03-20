@@ -13,8 +13,8 @@ export default new Router({
   routes: [
       {path:'/home',meta:{title:'首页'},component:home},
       {path:'/Sign_up',meta:{title:'报名'},component:Sign_up},
-      {path:'/Charter',meta:{title:'报名'},component:Charter},
-      {path:'/Video',meta:{title:'报名'},component:Video},
+      {path:'/Charter',meta:{title:'章程'},component:Charter},
+      {path:'/Video',meta:{title:'视频'},component:Video},
       
        {path:'/*',meta:{title:'首页'},component:home},
   ]
