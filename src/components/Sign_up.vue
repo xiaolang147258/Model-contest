@@ -47,7 +47,7 @@
      	      		<img class="feng" :src="videoimg" />
      	      		<img class="bo" v-show="video_show==false" src="../../static/img/bofanganniu.png" alt="" />
      	      	</div>
-     	      	  <input style="width:100%;height:100%;opacity:0;" @change="onFileChange"  v-show='video_show' class='inp1'  type="file" accept="video/avi,video/mp4,video/flv,video/3gp,video/swf">
+     	      	  <input style="width:100%;height:100%;opacity:0;" @change="onFileChange"  v-show='video_show' class='inp1'  type="file" accept="video/*">
      	      	  <img @click="video_x" v-show="video_show==false" class="xa" src="../../static/img/guanx.png" />
      	      </div>
      	      <a>*</a>
@@ -111,7 +111,6 @@ export default {
     	video_show:true,
     	videoimg:'static/img/imgjia.png',
     	video_id:'',
-    	
     	
     	img_url1:'static/img/imgjia.png',
     	inp1_show:true,

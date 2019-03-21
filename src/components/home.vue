@@ -17,7 +17,7 @@
       	  	 <div class="data_box_c1"><img src="../../static/img/sa.png"/><p>距离报名结束时间还有</p></div>
       	  	 <div class="data_box_c2"><p><a>22&nbsp;</a>天<a>&nbsp;16&nbsp;</a>时<a>&nbsp;40&nbsp;</a>分<a>&nbsp;20&nbsp;</a>秒</p></div>
       	  </div>
-      	  <div class="btn">我要报名</div>
+      	  <div @click="go_sign_up" class="btn">我要报名</div>
       </div> 
       <div class="img_to1"><img src="../../static/img/64e3d4a7cf25df2c440bc7033f3e162951627317104d6-eDSBzc_fw658[1].png"/></div>  
       <div class="img_to1" style="margin:0 auto"><img src="../../static/img/c2fb43516ce96489a3a65af867b286ad3438094db302-98iOdt_fw658[1].png"/></div>  	
@@ -30,7 +30,7 @@
       </div>
   <!--参赛选手--> 
       <div class="fin">
-      	   <div class="fin_c" v-for="(i,index) in 6">
+      	   <div class="fin_c" v-for="(i,index) in 6" @click="go_details">
       	   	    <div class="fin_cs"><img src="../../static/img/_20190319182041.png"/></div>
       	   	    <p style="margin:0.2rem 0 0.093333rem 0;">参赛号：1232</p><p>艺名：阿紫</p><p class="piao">当前得票：<a>123443票</a></p>
       	   	    <div v-if="index%3" class="zan"><img src="../../static/img/yitoupiao.png"/></div>
@@ -59,6 +59,17 @@ export default {
     }
   },
   methods:{
+  	go_details(){//跳转作品详情
+  		 router.push({
+  	   	 path:'./hone_Works_details',
+  	   });
+  	},
+  	
+  	  go_sign_up(){
+  	  	router.push({
+  	   	 path:'./Sign_up',
+  	   });
+  	  },
   	  to_top(){
   	      	 window.scrollTo(0,0);  
   	  },
