@@ -79,11 +79,10 @@
      	   
      	   <p class="bto_p">（带*号为必填，所有隐私信息不公开）</p>
      	   
-     	   <div class="xuzi"><img @click="gou_show=!gou_show" :src="gou_show?'../../static/img/xin/gou.png':'../../static/img/xin/gou_a.png'" alt="" /><a>报名须知：</a></div>
+     	   <div class="xuzi"><img @click="gou_show=!gou_show" :src="gou_show?'static/img/xin/gou.png':'static/img/xin/gou_a.png'" alt="" /><a>报名须知：</a></div>
      	   
      	   <div class="go_jiao">提交报名</div>
      	   	
-     	   
      </div>
      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
      <div class="xuan_xiang_box_c"></div>
@@ -123,19 +122,10 @@ export default {
     }
   },
   methods:{
-  	creatImg() {//生成图片
-  const video = document.getElementById('video')[0];
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const imgHeight = $('#video').height();
-  const imgWidth = $('#video').width();
-  ctx.drawImage(video, 0, 0, imgWidth, imgHeight);
-
-  const imgSrc = canvas.toDataURL('image/png');
-
-  console.log(imgSrc);
-  this.videoimg = imgSrc
-},
+  	creatImg(file){//生成图片
+    
+       
+    },
   	
   	video_x(){//删除视频
   		this.video_show = true;
@@ -169,7 +159,7 @@ export default {
                     background: '#1989fa'
                   });
                   
-                  this.creatImg()
+                  this.creatImg(files)
                   
           }  
   	},
