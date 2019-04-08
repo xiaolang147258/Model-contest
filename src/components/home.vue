@@ -3,11 +3,11 @@
   <div id="hello" style="width:100%;padding-bottom:0.4rem;">
   	  <div class="img_top"><img src="../../static/img/banner.png" alt="" /></div>
       <div class="xin_box">
-      	  <div class="xin_box_c"><p>21235</p><p style="font-size:0.373333rem;">参赛艺人 </p></div>
+      	  <div class="xin_box_c"><p>{{gao_zan.Count}}</p><p style="font-size:0.373333rem;">参赛艺人 </p></div>
       	  <div class="xian"></div>	  
-      	  <div class="xin_box_c"><p>21235</p><p style="font-size:0.373333rem;">累计投票 </p></div>
+      	  <div class="xin_box_c"><p>{{gao_zan.like_numbers}}</p><p style="font-size:0.373333rem;">累计投票 </p></div>
       	  <div class="xian"></div>	  
-      	  <div class="xin_box_c"><p>21235</p><p style="font-size:0.373333rem;">访问量 </p></div>
+      	  <div class="xin_box_c"><p>{{gao_zan.hits_numbers}}</p><p style="font-size:0.373333rem;">访问量 </p></div>
       </div>  
       <div class="shou_box">
       	  <div class="inp_box"><img src="../../static/img/sousuo.png" alt="" />
@@ -15,26 +15,30 @@
       	  </div>
       	  <div class="data_box">
       	  	 <div class="data_box_c1"><img src="../../static/img/sa.png"/><p>距离报名结束时间还有</p></div>
-      	  	 <div class="data_box_c2"><p><a>22&nbsp;</a>天<a>&nbsp;16&nbsp;</a>时<a>&nbsp;40&nbsp;</a>分<a>&nbsp;20&nbsp;</a>秒</p></div>
+      	  	 <div v-if="isEnd==false" class="data_box_c2"><p><a>{{shi.d}}&nbsp;</a>天<a>&nbsp;{{shi.h}}&nbsp;</a>时<a>&nbsp;{{shi.m}}&nbsp;</a>分<a>&nbsp;{{shi.s}}&nbsp;</a>秒</p></div>
+      	     <div v-else class="data_box_c2"><p>报名已结束</p></div>
       	  </div>
       	  <div @click="go_sign_up" class="btn">我要报名</div>
       </div> 
-      <div class="img_to1"><img src="../../static/img/64e3d4a7cf25df2c440bc7033f3e162951627317104d6-eDSBzc_fw658[1].png"/></div>  
-      <div class="img_to1" style="margin:0 auto"><img src="../../static/img/c2fb43516ce96489a3a65af867b286ad3438094db302-98iOdt_fw658[1].png"/></div>  	
+      
+      <div class="img_to1"><img v-for="(i,index) in gao_zan.PicList" class="img_tos" :src="i"/></div>  
+     
   <!--tab选择-->
       <div class="tab_box">
       	 <div style="width:6.16rem;height:100%;margin:0 auto;color: #FF9898;">
-      	 	 <div @click="tab_nu=0" class="tab_box_c" :class="{tab_box_c_s:tab_nu==0}"><img src="../../static/img/jinritrenqi.png"/><p>今日人气榜</p></div>
-      	 	 <div @click="tab_nu=1" class="tab_box_c" :class="{tab_box_c_s:tab_nu==1}"style="float:right;"><img src="../../static/img/benzhourenqi.png"/><p>本周人气榜</p></div>	
+      	 	 <div @click="git_renqi('likes')" class="tab_box_c" :class="{tab_box_c_s:tab_nu==0}"><img src="../../static/img/jinritrenqi.png"/><p>今日人气榜</p></div>
+      	 	 <div @click="git_renqi('week ')" class="tab_box_c" :class="{tab_box_c_s:tab_nu==1}"style="float:right;"><img src="../../static/img/benzhourenqi.png"/><p>本周人气榜</p></div>	
       	 </div>
       </div>
   <!--参赛选手--> 
       <div class="fin">
-      	   <div class="fin_c" v-for="(i,index) in 6" @click="go_details">
-      	   	    <div class="fin_cs"><img src="../../static/img/_20190319182041.png"/></div>
-      	   	    <p style="margin:0.2rem 0 0.093333rem 0;">参赛号：1232</p><p>艺名：阿紫</p><p class="piao">当前得票：<a>123443票</a></p>
-      	   	    <div v-if="index%3" class="zan"><img src="../../static/img/yitoupiao.png"/></div>
-      	   	    <div v-else class="zan">给她点赞</div>
+      	   <div class="fin_c" v-for="(i,index) in home_act" @click="go_details(i)">
+      	   	    <div class="fin_cs"><img :src="i.pic"/></div>
+      	   	    <p style="margin:0.2rem 0 0.093333rem 0;">参赛号：{{i.id}}</p><p>艺名：{{i.title}}</p><p class="piao">当前得票：<a>{{i.like_numbers}}票</a></p>
+      	   	   
+      	   	    <div @click.stop v-if="i.like_show==1" class="zan"><img src="../../static/img/yitoupiao.png"/></div>
+      	   	    <div @click.stop v-else @click='like_click(i.id,index)' class="zan">给她点赞</div>
+      	      
       	   </div>  
       </div>
      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
@@ -51,18 +55,99 @@ export default {
   
   data () {
     return {
-    	show1s:false,
-    	
+    	show1s:true,
     	tab_nu:0,
+    	gao_zan:'',//广告位，点赞数，总人数
+    	shi:{d:'',h:'',m:'',s:''},
+    	isEnd:false,
     	
+    	home_act:[],
     	
     }
   },
+  created(){
+		 let that = this;
+		 that.date_deadline_at();
+	 },
   methods:{
-  	go_details(){//跳转作品详情
+  	date_deadline_at(){//倒计时函数
+  	var interval = setInterval(()=>{
+		var date = this.gao_zan.deadline_at-(new Date().getTime()/1000);
+		if(date == 0){
+			this.isEnd = true;
+		}else{
+			 this.shi.d = parseInt(date / 60 / 60 / 24);
+			 this.shi.h = parseInt(date / 60 / 60 % 24);
+			 this.shi.m = parseInt(date / 60 % 60);//计算剩余的分钟
+	  	 this.shi.s = parseInt(date % 60);//计算剩余的秒数 
+		  }
+	   },1000);
+  	},
+  	
+  	like_click(id,index){//点赞
+  		axios.get('enroll-likes?id='+id+'&token='+localStorage.token).then(res=>{
+        	    	  if(res.code = 200){
+        	    	 	      console.log(res.data.data,'点赞');
+        	    	 	      this.home_act[index].like_show = 1;
+        	    	 	      this.$toast({message:'点赞成功',duration:3000});
+        	    	 	      this.home_act[index].like_numbers+=1;
+        	    	  }else{
+        	    	  	   this.$toast({message:'你已经对当前选手点赞过了',duration:3000});
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+  	},
+  	
+  	
+  	git_renqi(val){
+  		this.tab_nu = val=='likes'?0:1
+  		axios.get('enroll?type='+val+'&token='+localStorage.token).then(res=>{
+        	    	  if(res.code = 200){
+        	    	 	      
+        	    	 	      this.home_act = res.data.data.TidbitsList;
+        	    	 	      
+        	    	 	      for(var i=0;i<this.home_act.length;i++){
+        	    	 	      	  this.home_act[i].like_show = 0;
+        	    	 	      }
+        	    	 	      
+        	    	 	      console.log( this.home_act,'周人气。今日人气');
+        	    	 	      
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+  	},
+  	
+  	git_guang(){
+  		  axios.get('home-page?token='+localStorage.token).then(res=>{
+        	    	  if(res.code = 200){
+        	    	 	      console.log(res.data.data,'广告位，点赞数，总人数');
+        	    	 	      this.gao_zan = res.data.data;
+        	    	 	      store.state.Count = this.gao_zan.Count;
+        	    	 	      store.state.like_numbers = this.gao_zan.like_numbers;
+        	    	 	      store.state.hits_numbers = this.gao_zan.hits_numbers;
+        	    	 	      window.setTimeout(()=>{
+        	    	 	      	this.show1s =false;
+        	    	 	      },1000)
+        	    	 	      
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+  	},
+  	
+  	
+  	go_details(i){//跳转作品详情
+  		 localStorage.id = i.id;
   		 router.push({
-  	   	 path:'./hone_Works_details',
+         path: `/hone_Works_details&${i.id}`,
+//       path:'/hone_Works_details'
   	   });
+  	   
   	},
   	
   	  go_sign_up(){
@@ -74,9 +159,26 @@ export default {
   	      	 window.scrollTo(0,0);  
   	  },
   	  
+  	  token_sui(){
+  	  	 var len =  32;
+　            　     var $chars='ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+　　               var maxPos = $chars.length;
+　　                 var pwd = '';
+　                    for(var i = 0; i < len; i++){
+　　　　                 pwd += $chars.charAt(Math.floor(Math.random()*maxPos));
+　　                  }
+         localStorage.token = localStorage.token?localStorage.token:pwd;
+  	  },
   	  
   },
   mounted(){
+  	  this.token_sui()
+  	
+  	  this.git_guang();
+  	  
+  	  this.git_renqi('likes');//默认获取今日人气
+  	  
+  	  
   	  window.scrollTo(0,0);  
   	  store.state.btn_show = true;
   	  store.state.bottom_1 = true;
@@ -198,16 +300,16 @@ display:-webkit-flex;
 		border-bottom: 0.013333rem solid #FF9898;
 	}
 	
-	.img_to1 img{
-		width:100%;
-		height:100%;
-	}
+	
 	.img_to1{
+		width:9.2rem;
+		margin:0.56rem auto 0 auto;
+	}
+	.img_tos{
 		width:9.2rem;
 		height:3.813333rem;
 		border-radius: 0.266666rem;
-		overflow:hidden;
-		margin:0.56rem auto 0.266666rem auto;
+		margin-bottom: 0.266rem;
 	}
 	.btn{
 		width: 2.72rem;

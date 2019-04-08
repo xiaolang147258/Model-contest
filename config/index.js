@@ -11,8 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-         "/wechat/api":{
-            target:'http://video-mp.cieo.com.cn',//你接口的域名
+         "/api":{
+            target:'http://store.kuntopic.com',//你接口的域名
             changeOrigin: true,
             pathRewrite: {
                 '^/api': '/'

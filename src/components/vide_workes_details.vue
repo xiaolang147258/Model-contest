@@ -4,34 +4,16 @@
       <div class="top_img"><img src="../../static/img/xin/title.png" /></div>
         <div class="act_box">
         	<div class="val_box">
-        		<div class="val_box_c">
-        			<div class="tou_box"><img :src="act.pic" alt="" /></div>
-        			<div class="val_box_c_p"><p>{{act.stagename}}</p><div>{{act.id}}</div></div>
-        			<div class="val_box_c_text">
-        				  {{act.site}}
-        			</div>	 
-        		</div>
-        		<div class="shuju_box">
-        				<div class="shuju_box_c">
-        					<p style="font-size:0.426666rem;font-weight:600;">{{act.like_numbers}}</p><p style="font-size: 0.373333rem;">当前点赞</p>
-        				</div> 
-        				<div class="shuju_box_c" style="margin-left:1.186666rem;">
-        					<p style="font-size:0.426666rem;font-weight:600;">{{act.ranking}}</p><p style="font-size: 0.373333rem;">排名</p>
-        				</div> 
-        				<div class="shuju_box_c" style="width: 2.24rem;float:right;margin-right:0.613333rem;">
-        					<p style="font-size:0.426666rem;font-weight:600;">{{act.disparity}}</p><p style="font-size: 0.373333rem;">距上一名还差</p>
-        				</div> 
-        	    </div>
+        		
+        			<div class="val_box_c_text" v-html="act.site"></div>	 
+        				  
         	</div>
-        	<p class="jianjie">选手简介</p>
+        	<p class="jianjie">{{act.title}}</p>
         	<div class="video_box">
         		<img :src="act.cover_pic" alt="" />
         		<video  class="video" ref="video" controls="controls" :src="act.url" webkit-playsinline='true' playsinline='true'></video>
         	</div>
-        	<div class="img_boxa">
-        		 <div @click="tu_click(0)" class="img_boxa_c"><img :src="act.cover_pic"/></div>
-        		 <div @click="tu_click(1)" class="img_boxa_c"><img :src="act.front_pic"/></div>
-        	</div>
+        	
         	
         </div>
         
@@ -63,7 +45,7 @@ export default {
   	like_click(){
   		axios.get('enroll-likes?id='+this.act.id+'&token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
-        	    	 	      console.log(res.data.data,'点赞');
+        	    	 	      console.log(res.data,'点赞');
         	    	 	      this.$toast({message:'点赞成功',duration:2000});
         	    	 	      this.git_act();
         	    	  }else{
@@ -82,7 +64,7 @@ export default {
     },
   	
   	 git_act(){
-  	 	 axios.get('enroll-view?id='+this.$route.params.id+'&token='+localStorage.token).then(res=>{
+  	 	 axios.get('tidbits-view?id='+this.$route.params.id+'&token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
         	    	 	      console.log(res.data.data,'详情数据');
         	    	 	      this.act = res.data.data;
@@ -110,10 +92,9 @@ export default {
   	  window.scrollTo(0,0);  
   	  
   	  store.state.btn_show = false;
-  	  
 //	  console.log(this.$route.params.id);
       this.git_act()
-	    this.$refs.video.src ='http://video-vote.cieo.com.cn/upload/2019-03-21/ns6nho0mw9i1553140198345Netscape7tjf4ehet9ce872b3b8be8ac09d7c879f92ae74219.mp4'
+//	    this.$refs.video.src ='http://video-vote.cieo.com.cn/upload/2019-03-21/ns6nho0mw9i1553140198345Netscape7tjf4ehet9ce872b3b8be8ac09d7c879f92ae74219.mp4'
   },
   
 }
@@ -136,7 +117,7 @@ export default {
 		height: 5.386666rem;
 		margin-top: 0.266666rem;
 		 display:-webkit-flex; 
-     display:flex;
+                 display:flex;
 		 flex-direction:row;
 		 flex-wrap:wrap;
 		 justify-content:space-between;
@@ -193,12 +174,26 @@ export default {
 		padding-left: 0.666666rem;
 	}
 	.val_box_c_text{
-		width: 7.386666rem;
+		width:100%;
 		font-size: 0.32rem;
 		line-height:0.48rem;
 		color: white;
 		margin-top: 0.28rem;
 		text-align:justify;
+	}
+	.val_box_c_text p{
+		width:100%;
+		font-size: 0.32rem;
+		line-height:0.48rem;
+		color: white;
+		margin-top: 0.28rem;
+		text-align:justify;
+	}
+	.val_box_c_text img{
+		width: 100%;
+	}
+	.val_box_c_text p img{
+		width: 100%;
 	}
 	.val_box_c_p div{
 		width:1.333333rem;

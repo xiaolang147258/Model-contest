@@ -10,7 +10,7 @@ Vue.use(Vuex)
 
 import axios from 'axios'
 Vue.prototype.axios = axios;
-axios.defaults.baseURL='/wechat/api'; 
+axios.defaults.baseURL='/api'; 
 
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';

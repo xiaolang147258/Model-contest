@@ -3,15 +3,14 @@
   <div id="hello" style="width:100%;background:linear-gradient(135deg,rgba(228,50,86,1) 0%,rgba(255,127,100,1) 100%);padding-bottom:0.8rem;">
      
       <div class="hello_box">
-      	   <div class="hello_box_c" v-for="i in 6" @click="go_details">
+      	   <div class="hello_box_c" v-for="(i,index) in active" @click="go_details(i)">
       	   	   <div class="img_box">
-      	   	   	   <img class="img_box_img1" src="../../static/img/_20190319182041.png" alt="" />
+      	   	   	   <img class="img_box_img1" :src="i.pic" alt="" />
       	   	   	   <img class="bo" src="../../static/img/xin/bofanganniu.png" alt="" />
       	   	   </div>
-      	   	   <p class="hello_box_c_pbox">秀我2019第八届美在珠江短视频艺人大赛</p>
-      	   	   <p class="piao">浏览量：<a>123443</a>次</p>
+      	   	   <p class="hello_box_c_pbox">{{i.title}}</p>
+      	   	   <p class="piao">浏览量：<a>{{i.hits_numbers}}</a>次</p>
       	   </div>
-      	   
       </div>  
         
         
@@ -31,22 +30,39 @@ export default {
   
   data () {
     return {
-    	show1s:false,
-    	
+    	show1s:true,
+    	active:[],
     	
     	
     }
   },
   methods:{
-  	go_details(){
+  	git_act(){
+  		 axios.get('tidbits?token='+localStorage.token).then(res=>{
+        	    	  if(res.status = 200){
+        	    	 	      console.log(res.data.data.TidbitsList)
+        	    	 	      this.active = res.data.data.TidbitsList;
+        	    	 	      this.show1s =false;
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+  	},
+  	
+  	go_details(i){
+  		 localStorage.id = i.id
   		 router.push({
-  	   	 path:'./hone_Works_details',
+	   	   path: `/vide_workes_details&${i.id}`,
   	   });
+  	   
   	},
   	
   	
   },
   mounted(){
+  	  this.git_act()
+  	  
   	  window.scrollTo(0,0);  
   	  store.state.btn_show = true;
   	  store.state.bottom_1 = false;

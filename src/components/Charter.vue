@@ -3,9 +3,10 @@
   <div id="hello" style="width:100%;background:linear-gradient(135deg,rgba(228,50,86,1) 0%,rgba(255,127,100,1) 100%);padding-bottom:0.4rem;">
      <div class="top_img"><img src="../../static/img/xin/title.png" alt="" /></div>
      <div class="val_box">
-     	   <p class="title">大赛章程</p>
-     	   <div class="p_box">
-     	   	<p class="p_c">第一章  总  则</p>
+     	   <p class="title">{{act.title}}</p>
+     	   <div class="p_box" v-html="act.content">
+     	   	 <!--<p class="p_c">{{act.content}}</p>-->
+     	   	<!--<p class="p_c">第一章  总  则</p>
           <p class="p_c">第一条　“挑战杯”全国大学生课外学术科技作品竞赛是由共青团中央、中国科协、教育部、全国学联主办的大学生课外学术科技活动中一项具有导向性、示范性和群众性的竞赛活动，每两年举办一届。</p>
           <p class="p_c">第二条　竞赛的宗旨：崇尚科学、追求真知、勤奋学习、锐意创新、迎接挑战。</p>
           <p class="p_c">第三条　竞赛的目的：引导和激励高校学生实事求是、刻苦钻研、勇于创新、多出成果、提高素质，培养学生创新精神和实践能力，并在此基础上促进高校学生课外学术科技活动的蓬勃开展，发现和培养一批在学术科技上有作为、有潜力的优秀人才。</p>
@@ -24,7 +25,7 @@
           <p class="p_c">第十条  全国评审委员会职责如下：</p>
           <p class="p_c">1．在本章程和评审规则基础上制定评审实施细则。</p>
           <p class="p_c">2．审看参赛作品及其演示，对作者进行问辩。</p>
-          <p class="p_c">3．确定参赛作品获奖等次。</p>
+          <p class="p_c">3．确定参赛作品获奖等次。</p>-->
      	   </div>
      </div>   
         
@@ -42,13 +43,26 @@ export default {
   
   data () {
     return {
-    	show1s:false,
+    	show1s:true,
     	
+    	act:'',
     	
     	
     }
   },
   methods:{
+  	git_ac(){
+  		  axios.get('constitution?token='+localStorage.token).then(res=>{
+        	    	  if(res.code = 200){
+        	    	 	      console.log(res.data);
+        	    	 	      this.act = res.data.data
+        	    	 	      	this.show1s =false;
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+  	},
   	
   },
   mounted(){
@@ -58,6 +72,8 @@ export default {
       store.state.bottom_2 = false;
       store.state.bottom_3 = true;
       store.state.bottom_4 = false;
+      
+      this.git_ac();
       
 //	    window.setTimeout(()=>{
 //	  	     var a = document.documentElement.clientHeight+'px';
@@ -78,6 +94,9 @@ export default {
 		 font-size: 0.346666rem;
 		 color: #585858;
 		 text-align:justify;
+		 line-height:0.506666rem;
+		 font-family:MingHei;
+		 margin-top: 0.266666rem;
 	}
 	.title{
 		 font-size: 0.426666rem;

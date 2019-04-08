@@ -56,6 +56,10 @@ const state = {
     
     tou_url:'',
     
+    Count:0,
+    like_numbers:0,
+    hits_numbers:0,
+    
 };
         
 	 	

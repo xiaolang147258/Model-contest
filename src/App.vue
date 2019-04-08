@@ -20,7 +20,7 @@
   	 </div>  
   	 
   	 <div @click="btn_c3" style="margin-left:1.866666rem;" class="btn_box">
-  	 	<img :src="$store.state.bottom_3?'static/img/shouye_a.png':'static/img/zahngcheng.png'"/>
+  	 	<img :src="$store.state.bottom_3?'static/img/cai.png':'static/img/zahngcheng.png'"/>
   	 	<p :class="{font_color:$store.state.bottom_3,font_color_s:$store.state.bottom_3==false}">章程</p>
   	 </div> 
   	 

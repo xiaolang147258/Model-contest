@@ -2,26 +2,36 @@
   <!--报名-->
   <div id="hello" style="width:100%;background:linear-gradient(135deg,rgba(228,50,86,1) 0%,rgba(255,127,100,1) 100%);padding-bottom:1.426666rem;">
      <div class="top_box">
-     	  <div class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">21235</p><p style="font-size:0.373333rem;">参赛艺人</p></div>
-        <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">21235</p><p style="font-size:0.373333rem;">累计投票</p></div>
-        <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">21235</p><p style="font-size:0.373333rem;">访问量</p></div>
+     	  <div class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.Count}}</p><p style="font-size:0.373333rem;">参赛艺人</p></div>
+        <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.like_numbers}}</p><p style="font-size:0.373333rem;">累计投票</p></div>
+        <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.hits_numbers}}</p><p style="font-size:0.373333rem;">访问量</p></div>
      </div>
      <div class="nai_box">
+     	   <div class="inp_a"><div class="name"><p>姓名：</p></div><input v-model="x_name" type="text" placeholder="请输入姓名"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>姓名：</p></div><input type="text" placeholder="请输入姓名"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>艺名：</p></div><input v-model="stage_name" type="text" placeholder="请输入艺名"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>艺名：</p></div><input type="text" placeholder="请输入艺名"/><a>*</a></div>
-     	   
-     	   <div class="inp_a"><div class="name"><p>年龄：</p></div><input type="number" maxlength="2" placeholder="请输入年龄"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>年龄：</p></div><input v-model="age" type="number" maxlength="2" placeholder="请输入年龄"/><a>*</a></div>
      	   
      	   <div class="inp_a"><div class="name"><p>性别：</p></div>
      	     <div @click="sexa=0" style="margin-right:0.4rem;" :class="{sexs:sexa==0,sex:sexa!=0}">男</div>
      	     <div @click="sexa=1" :class="{sexs:sexa==1,sex:sexa!=1}">女</div> <a>*</a>
      	   </div>
      	   
-     	   <div class="inp_a"><div class="name"><p>真实身高：</p></div><input type="number" placeholder="请输入身高 CM"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>真实身高：</p></div><input v-model="x_height" type="number" placeholder="请输入身高 CM"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>三围：</p></div><input type="number" maxlength="2" placeholder="请输入三围 CM"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>三围：</p></div><input v-model="Three_dimensions" type="number" maxlength="2" placeholder="请输入三围 CM"/><a>*</a></div>
+   <!--上传头像-->  	   
+     	   <div class="inp_a" style="height:1.393333rem;"><div class="name"><p>头像：</p></div>
+     	      <div class="img1">
+     	      	<div @click="lan_img(3)" style="width: 100%;height: 100%;overflow: hidden;">
+     	      		<img class="feng" :src="img_url1_ss" /></div>
+     	      	  <van-uploader v-show='inp1_show_s' class='inp1' :after-read="onRead1_s"></van-uploader> 
+     	      	  <img @click="x_img(3)" v-show="inp1_show_s==false" class="xa" src="../../static/img/guanx.png" />
+     	      </div>
+     	      <a>*</a>
+     	   </div>
+   	
    <!--上传图片-->  	   
      	   <div class="inp_a" style="height:1.393333rem;"><div class="name"><p>形象照：</p></div>
      	      <div class="img1">
@@ -61,33 +71,61 @@
            </mu-fade-transition>  
      	  </div>
      	  
-     	  <div class="inp_a"><div class="name"><p>微信号：</p></div><input type="text" placeholder="请输入微信号"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>微信号：</p></div><input v-model="wxid" type="text" placeholder="请输入微信号"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>抖音号：</p></div><input type="text" placeholder="请输入抖音号"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>抖音号：</p></div><input v-model="dyid" type="text" placeholder="请输入抖音号"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>微博：</p></div><input type="text" placeholder="请输入微博名"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>微博：</p></div><input v-model="vb_name" type="text" placeholder="请输入微博名"/><a>*</a></div>
      	  
-     	   <div class="inp_a"><div class="name"><p>手机号码：</p></div><input max-length="11" type="number" placeholder="请输入手机号码"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>手机号码：</p></div><input v-model="x_iphone" max-length="11" type="number" placeholder="请输入手机号码"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>现居城市：</p></div><input type="text" placeholder="请输入现居城市"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>现居城市：</p></div><input v-model="Current_city" type="text" placeholder="请输入现居城市"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>就读/毕业院校：</p></div><input type="text"  placeholder="请输入就读/毕业院校"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>就读/毕业院校：</p></div><input v-model="graduated_school" type="text"  placeholder="请输入就读/毕业院校"/><a>*</a></div>
      	   
-     	   <div class="inp_a" style="height:2.68rem;"><div class="name"><p>兴趣特长/荣誉：</p></div>
-     	         <textarea type="text"  placeholder="请输入兴趣特长/荣誉"/><a>*</a>
+     	   <div class="inp_a"><div class="name"><p>兴趣特长/荣誉：</p></div><input v-model="interest" type="text"  placeholder="兴趣特长/荣誉"/><a>*</a></div>
+     	   
+     	  
+     	   <div class="inp_a" style="height:2.68rem;"><div class="name"><p>个人简介：</p></div>
+     	         <textarea type="text" v-model="Personal_profile"  placeholder="请输入个人简介"/><a>*</a>
      	   </div>
      	   
      	   <p class="bto_p">（带*号为必填，所有隐私信息不公开）</p>
      	   
-     	   <div class="xuzi"><img @click="gou_show=!gou_show" :src="gou_show?'static/img/xin/gou.png':'static/img/xin/gou_a.png'" alt="" /><a>报名须知：</a></div>
+     	   <div class="xuzi"><img @click="gou_show=!gou_show" :src="gou_show?'static/img/xin/gou.png':'static/img/xin/gou_a.png'" alt="" /><a @click="showa=true">报名须知：</a></div>
      	   
-     	   <div class="go_jiao">提交报名</div>
+     	   <div class="go_jiao" @click="go_click">提交报名</div>
      	   	
      </div>
+     
      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
+     
      <div class="xuan_xiang_box_c"></div>
+     
+     
+     <van-popup v-model="showa" position="bottom" :overlay="false">
+          <div class="dala">
+          	   <p class="titlesa">{{act.title}}</p>
+          	   <div class="cone" v-html="act.content"></div>
+          	   <div @click="zhi_dao" class="xu_zhi">知道了</div>
+          </div>
+     </van-popup>
+     
+<!--进度条-->   
+    <van-popup v-model="login">
+    	<van-circle
+       v-model="currentRate"
+      :rate="login_nub"
+      :speed="100"
+      :text="text"
+      :stroke-width='60'
+      /> 
+    </van-popup> 
+     
   </div>
 </template>
+
+
 
 <script>
 
@@ -100,28 +138,233 @@ export default {
   
   data () {
     return {
-    	gou_show:false,
+    	login:false,//进度条显示隐藏
+    	currentRate:0,
+    	login_nub:0,
     	
+    	act:'',
+    	
+    	showa:false,
     	
     	show1s:false,
-    	sexa:0,
+    	
+    	inp1_show_s:true,
+    	img_url1_ss:'static/img/imgjia.png',
+    	img_id3:'',//头像
     	
     	video_shows:false,
     	video_show:true,
     	videoimg:'static/img/imgjia.png',
-    	video_id:'',
+    	video_id:'',//视频
     	
     	img_url1:'static/img/imgjia.png',
     	inp1_show:true,
-    	img_url1_s:'',
+    	img_url1_s:'',//图片1
     	
     	img_url2:'static/img/imgjia.png',
     	inp1_show2:true,
-    	img_url2_s:'',
+    	img_url2_s:'',//图片2
+    	
+    	x_name:"",//姓名
+    	stage_name:'',//艺名
+    	age:'',//年龄
+    	sexa:0,//性别     0为男1为女
+    	x_height:'',//真实身高
+    	Three_dimensions:'',//三围
+    	wxid:'',//微信号
+    	dyid:'',//抖音号
+    	vb_name:'',//微博名
+    	x_iphone:'',//手机号
+    	Current_city:'',//现居住城市
+    	graduated_school:'',//毕业院校
+    	interest:'',//特长、荣誉
+    	Personal_profile:'',//个人简介
+    	
+    	gou_show:false,//打钩选项，默认false
     	
     }
   },
+  computed: {
+    text() {
+      return this.currentRate.toFixed(0) + '%'
+    },
+    
+  },
   methods:{
+  	go_click(){//点击提交按钮
+  		  
+  		  	
+  		  if(this.img_id3!=''&&this.video_id!=''&&this.img_url1_s!=''&&this.img_url2_s!=''&&this.x_name!=''&&this.stage_name!=''&&this.age!=''&&this.x_height!=''&&this.Three_dimensions!=''&&this.wxid!=''&&this.dyid!=''&&this.vb_name!=''&&this.x_iphone!=''&&this.Current_city!=''&&this.graduated_school!=''&&this.interest!=''&&this.Personal_profile!=''){
+  		  	if(this.gou_show){
+//		  		
+		   var result = [];
+			   for(var i=0;i<6;i++){
+			     var ranNum = Math.ceil(Math.random() * 25); //生成一个0到25的数字
+			     result.push(ranNum);
+			   }
+			    var ider = result.join('');	
+		  	var pat = new Date().getFullYear()+(new Date().getMonth()+1)+new Date().getDate()+new Date().getHours()+new Date().getMinutes()+new Date().getSeconds()+ider
+		  	
+  		  	axios({
+            method:"post",
+            url:"enroll-save",
+            contentType:"application/json;charset=UTF-8",
+            dataType:"json",
+            data:{
+               token:localStorage.token,
+               uid:pat,
+               telephone:this.x_iphone,
+               wechat:this.wxid,
+               surname:this.x_name,
+               stagename:this.stage_name,
+               stature_height:this.x_height,
+               stature_measurements:this.Three_dimensions,
+               sex:(this.sexa==0?'男':'女'),
+               age:this.age,
+               city:this.Current_city,
+               schools:this.graduated_school,
+               pic:this.img_id3,
+               front_pic:this.img_url1_s,
+               cover_pic:this.img_url2_s,
+               url:this.video_id,
+               tik_tok:this.dyid,
+               weibo:this.vb_name,
+               speciality:this.interest,
+               site:this.Personal_profile
+             }
+            }).then(res=>{
+            	     console.log(res.data);
+            	    if(res.data.code = 200){
+        	    	 	   this.$toast.success({
+        	                       message:'发布成功',
+        	                       duration:2000
+        	                 });
+        	          window.setTimeout(()=>{
+        	          	router.push({
+  	   	                  path:'./home',
+  	                  });
+        	          },1000);
+        	    	  }  
+             }).catch(err=>{
+                      console.log(err);
+                       this.$toast({
+        	                       message:'网络错误',
+        	                       duration:3000
+        	                 });
+             });
+  		  	}else{
+  		  		 this.$toast({message:'你没有查看比赛须知',duration:2000});
+  		  	}
+  		  }else{this.$toast({message:'没有完善信息',duration:1000})}
+  	},
+  	
+  //执行分片上传
+    PostFile(file,i,num){
+        var name = file.name,                          //文件名
+            size = file.size,                          //总大小shardSize = 2 * 1024 * 1024,
+            shardSize = 1024*512,                //以?MB为一个分片,每个分片的大小
+            shardCount = Math.ceil(size / shardSize);  //总片数
+            console.log(shardCount,'视频分成几次上传')
+        if(i > shardCount){
+            return;
+        }
+        var start = i * shardSize;
+        var end = start + shardSize;
+        var packet = file.slice(start,end)
+        if((i+1) > shardCount){
+        	//最后一次上传，而外加一个参数
+//      	var fd = {'filename':name,'chunks':shardCount,'act':'combine'},
+        	 $.post(
+            'http://store.kuntopic.com/upload-file',
+            {"act":"combine","chunks":shardCount,"filename":name},
+             e=>{
+                if(e.flag){
+                	  console.log(e,'最后',num); 
+                	 if(num==1){
+                	 	  this.img_url1_ss = e.url;
+                	 	  this.img_id3 = e.url;
+  	 	                this.inp1_show_s = false;
+                	 }else if(num==2){
+                	 	  this.img_url1 = e.url;
+  	 	                this.inp1_show = false;
+  	 	                this.img_url1_s = e.url
+                	 }else if(num==3){
+                	 	  this.img_url2 = e.url;
+  	 	                this.inp1_show2 = false;
+  	 	                this.img_url2_s = e.url
+                	 }else if(num==4){
+                	 	 this.$refs.video.src = e.url;
+                	   this.video_show = false;
+                	   this.videoimg = 'static/img/banner.928342a.png'
+                	   this.video_id = e.url;
+                	 }
+                	  window.setTimeout(()=>{this.login_nub = 0;},1000);
+                    this.login_nub = 100;
+                    this.login = false;
+                    Notify({
+                     message: '上传成功',
+                     duration: 1000,
+                     background: '#1989fa'
+                   });
+                }
+             },'json'
+           );
+          
+        }else{
+        	 var fd = new FormData();
+           fd.append("newfile", packet); //slice方法用于切出文件的一部分
+           fd.append("filename", name);
+           fd.append("chunks", shardCount); //总片数
+           fd.append("chunk", i); //当前是第几片
+        
+        axios({
+            url:"http://store.kuntopic.com/upload-file",
+            method:"post",
+            data: fd,
+            cache: false,
+            //timeout:"10000",
+            async: true, //异步
+            dataType:"json",
+            processData: false, //很重要，告诉jquery不要对form进行处理
+            contentType: false, //很重要，指定为false才能形成正确的Content-Type
+            }).then(res=>{
+                console.log(res);
+                /*  表示上一块文件上传成功，继续下一次  */
+                if (res.data.code == 'wait') {
+                    fd = '';
+                    i++;
+                    var su = 100/(shardCount+1);
+                    this.login_nub = i*su;
+                    this.PostFile(file,i,num);
+                
+                } else {
+                    console.log('未知错误');
+                }
+            }).catch(err=>{ console.log(err)})
+	       }
+ 
+    },
+
+  	
+  
+  	git_ac(){
+  		  axios.get('guide?token='+localStorage.token).then(res=>{
+        	    	  if(res.code = 200){
+        	    	 	      console.log(res.data);
+        	    	 	      this.act = res.data.data
+        	    	 	       this.show1s =false;
+        	    	  }
+                }).catch(err=>{
+                	 console.log(err);
+                	 this.$toast({message:'网络错误',duration:3000});
+                });
+  	},
+  	
+  	zhi_dao(){
+  		 this.showa = false;//读完规则关闭规则弹窗
+  		 this.gou_show = true;//读完规则自动打钩
+  	},
+  	
   	creatImg(file){//生成图片
     
        
@@ -144,23 +387,27 @@ export default {
        if(size>=100000){
        	    this.$toast({message:'视频大小不能超过100M',duration:2000}); 
        }else{
-       	        this.video_show = false;
-            //视频预览
-              	 var reader = new FileReader();
-              	 this.file = files[0];
-              	 var _this = this
-              	 reader.onload = function(){
-                 	  _this.$refs.video.src = this.result;
-              	 };
-              	 reader.readAsDataURL(this.file);
-              	  Notify({
-                     message: '上传成功',
-                    duration: 1000,
-                    background: '#1989fa'
-                  });
-                  
-                  this.creatImg(files)
-                  
+       	        this.login = true;
+       	        this.login_nub = 0;
+       	        
+       	        this.PostFile(files[0],0,4);
+       	        
+//              this.go_cideo(files[0]);
+       	        
+       	      
+       	      	
+                //视频预览
+//              	 var reader = new FileReader();
+//              	 this.file = files[0];
+//            	 var _this = this;
+//            	 
+//              	 reader.onload = function(){
+//                 	  _this.$refs.video.src = this.result;
+//              	 };
+//              	 reader.readAsDataURL(this.file);
+//            	  
+//               this.creatImg(files);
+       	      
           }  
   	},
   	
@@ -168,30 +415,43 @@ export default {
   	x_img(i){//删除照片
   		if(i==1){
   			  this.img_url1 = 'static/img/imgjia.png';this.inp1_show = true;this.img_url1_s='';
-  		}else{
+  		}else if(i==2){
   			  this.img_url2 = 'static/img/imgjia.png';this.inp1_show2 = true;this.img_url2_s='';
+  		}else{
+  			  this.img_url1_ss = 'static/img/imgjia.png';this.inp1_show_s = true;this.img_id3='';
   		}
   	},
   	lan_img(i){//预览图片
-  		 let c = i==1?this.img_url1:this.img_url2;
+  		 let c = i==1?this.img_url1:(i==2?this.img_url2:this.img_url1_ss);
   		 let a = [];a.push(c);
   		 ImagePreview(a);
   	},
+  	
+  	onRead1_s(file){
+  		    console.log(file,'头像');
+  		    this.login = true;
+  	 	    this.PostFile(file.file,0,1);
+  	},
+  	
   	 onRead1(file){//上传图片1
   	 	    console.log(file,'图片1');
-  	 	    this.img_url1 = file.content;
-  	 	    this.inp1_show = false;
+  	 	    this.login = true;
+  	 	    this.PostFile(file.file,0,2); 
   	 },
   	onRead2(file){//上传图片2
   	 	    console.log(file,'图片2');
-  	 	    this.img_url2 = file.content;
-  	 	    this.inp1_show2 = false;
+  	 	    this.login = true;
+  	 	    this.PostFile(file.file,0,3);
   	 },
+  	
+  	
+  	
   	
   	
   	
   },
   mounted(){
+  	this.git_ac()
   	  window.scrollTo(0,0);  
   	  store.state.btn_show = true;
   	  store.state.bottom_1 = false;
@@ -211,6 +471,43 @@ export default {
 </script>
 
 <style scoped>
+	.xu_zhi{
+		 width:8.826666rem;
+height:0.96rem;
+background:rgba(255,255,255,1);
+opacity:1;
+border-radius:0.133333rem;
+line-height: 0.96rem;
+    font-size: 0.426666rem;
+    color: #FF7F64;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 0.266666rem;
+    border: 0.04rem solid #FF7F64;
+	}
+	.cone{
+		font-size: 0.346666rem;
+		color: #585858;
+		text-align:justify;
+		line-height:0.506666rem;
+		font-family:MingHei;
+	}
+	.titlesa{
+		font-size: 0.426666rem;
+		color: #FE4B50;
+		text-align: center;
+		font-weight: 600;
+		margin-bottom: 0.266666rem;
+	}
+	.dala{
+		width: 100%;
+		
+		background:white;
+		padding: 0 0.4rem;
+		padding-top: 0.4rem;
+		padding-bottom: 0.533333rem;
+		
+	}
 	.go_jiao{
 		width: 100%;
 		height: 0.96rem;
