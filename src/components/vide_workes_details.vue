@@ -10,15 +10,15 @@
         	</div>
         	<p class="jianjie">{{act.title}}</p>
         	<div class="video_box">
-        		<img :src="act.cover_pic" alt="" />
-        		<video  class="video" ref="video" controls="controls" :src="act.url" webkit-playsinline='true' playsinline='true'></video>
-        	</div>
+				<video  class="video" :src="act.url" type="video/mp4" controls="controls" webkit-playsinline='true' playsinline='true'></video>
+			</div>
         	
         	
         </div>
         
       <div class="btn_box">
-      	<p @click="to_home">首页</p><div class="shuxian"></div><p @click="to_sign">我要报名</p><div @click="like_click" class="btn_box_btn">给他/她点赞</div>
+      	<p @click="to_home">首页</p><div class="shuxian"></div><p @click="to_sign">我要报名</p>
+		<!-- <div @click="like_click" class="btn_box_btn">给他/她点赞</div> -->
       </div>
      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
      <div class="xuan_xiang_box_c"></div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+
+
 
 import store from '../vuex/store.js'
 import router from '../router/index.js'
@@ -42,29 +44,25 @@ export default {
     }
   },
   methods:{
-  	like_click(){
-  		axios.get('enroll-likes?id='+this.act.id+'&token='+localStorage.token).then(res=>{
-        	    	  if(res.code = 200){
-        	    	 	      console.log(res.data,'点赞');
-        	    	 	      this.$toast({message:'点赞成功',duration:2000});
-        	    	 	      this.git_act();
-        	    	  }else{
-        	    	  	   this.$toast({message:'你已经对当前选手点赞过了',duration:3000});
-        	    	  }
-                }).catch(err=>{
-                	 console.log(err);
-                	 this.$toast({message:'网络错误',duration:3000});
-                });
-  	},
+  	// like_click(){
+  	// 	axios.get('api/enroll-likes?id='+this.act.id+'&token='+localStorage.token).then(res=>{
+   //      	    	  if(res.code = 200){
+   //      	    	 	      console.log(res.data,'点赞');
+   //      	    	 	      this.$toast({message:'点赞成功',duration:2000});
+   //      	    	 	      this.git_act();
+   //      	    	  }else{
+   //      	    	  	   this.$toast({message:'你已经对当前选手点赞过了',duration:3000});
+   //      	    	  }
+   //              }).catch(err=>{
+   //              	 console.log(err);
+   //              	 this.$toast({message:'网络错误',duration:3000});
+   //              });
+  	// },
   	
-  	tu_click(i){
-  		var a = [];
-  		a[0] = this.act.cover_pic;a[1]=this.act.front_pic;
-  		ImagePreview({images:a,startPosition:i});
-    },
+  	
   	
   	 git_act(){
-  	 	 axios.get('tidbits-view?id='+this.$route.params.id+'&token='+localStorage.token).then(res=>{
+  	 	 axios.get('wechat/tidbits-view?id='+this.$route.params.id+'&token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
         	    	 	      console.log(res.data.data,'详情数据');
         	    	 	      this.act = res.data.data;
@@ -89,12 +87,11 @@ export default {
   	 
   },
   mounted(){
-  	  window.scrollTo(0,0);  
-  	  
+	  
+  	  window.scrollTo(0,0);
   	  store.state.btn_show = false;
-//	  console.log(this.$route.params.id);
       this.git_act()
-//	    this.$refs.video.src ='http://video-vote.cieo.com.cn/upload/2019-03-21/ns6nho0mw9i1553140198345Netscape7tjf4ehet9ce872b3b8be8ac09d7c879f92ae74219.mp4'
+	    // this.$refs.video.src ='http://model-competition.panyu.cn/uploads/files/201905/05132310572_200184.mp4'
   },
   
 }
@@ -128,17 +125,20 @@ export default {
 		position: absolute;
 		top: 0;
 		left: 0;
+		border-radius:0.266666rem;
 	}
 	.video_box img{
 		width: 100%;
 		min-height: 100%;
 	}
 	.video_box{
-		width: 100%;
-		height: 5.386666rem;
+		width:76%;
+		height:12.386rem;
 		border-radius:0.266666rem;
 		overflow: hidden;
 		position: relative;
+		margin: 0 auto;
+		background: black;
 	}
 	.jianjie{
 		width: 100%;

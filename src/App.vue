@@ -17,7 +17,7 @@
   	 <div @click="btn_c2" style="margin-left:1.866666rem;" class="btn_box">
   	 	<img :src="$store.state.bottom_2?'static/img/baoming_a.png':'static/img/baoming.png'"/>
   	 	<p :class="{font_color:$store.state.bottom_2,font_color_s:$store.state.bottom_2==false}">报名</p>
-  	 </div>  
+  	 </div>
   	 
   	 <div @click="btn_c3" style="margin-left:1.866666rem;" class="btn_box">
   	 	<img :src="$store.state.bottom_3?'static/img/cai.png':'static/img/zahngcheng.png'"/>
@@ -37,7 +37,7 @@
 <script>
 import router from './router/index.js'
 import store from './vuex/store.js'
-	
+
 export default {
   name: 'App',
   store,
@@ -102,7 +102,7 @@ export default {
 		 color: #BABABA;
 	}
 	.btn_box{
-		 width:0.64rem;
+		 width:0.74rem;
 		 height: 100%;
 		 float: left;
 		 text-align: center;
@@ -113,7 +113,7 @@ export default {
 		 margin-top:0.1rem;
 	}
 	.btn_box p{
-		 font-size:0.266666rem;
+		 font-size:0.336666rem;
 		 /*color: #BABABA;*/
 	}
 	

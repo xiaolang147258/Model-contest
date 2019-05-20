@@ -10,7 +10,7 @@ Vue.use(Vuex)
 
 import axios from 'axios'
 Vue.prototype.axios = axios;
-axios.defaults.baseURL='/api'; 
+axios.defaults.baseURL='/'; 
 
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
@@ -21,6 +21,11 @@ import 'vant/lib/index.css';
 Vue.use(Vant);
 
 import $ from 'jquery'
+
+
+import Es6Promise from 'es6-promise';
+ Es6Promise.polyfill();
+
 
 router.beforeEach((to, from, next) => {
   window.document.title = to.meta.title;

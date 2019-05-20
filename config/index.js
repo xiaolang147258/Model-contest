@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-         "/api":{
-            target:'http://store.kuntopic.com',//你接口的域名
+         "/":{
+            target:'http://model-competition.panyu.cn',//你接口的域名
             changeOrigin: true,
             pathRewrite: {
-                '^/api': '/'
+                '^/': '/'
             }
         }
     },
@@ -34,7 +34,9 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: 'cheap-module-eval-source-map',
+	
+    // devtool: 'cheap-module-eval-source-map',
+    devtool:'inline-source-map',
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help

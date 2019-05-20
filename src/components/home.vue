@@ -1,16 +1,17 @@
 <template>
   <!--首页-->
   <div id="hello" style="width:100%;padding-bottom:0.4rem;">
-  	  <div class="img_top"><img src="../../static/img/banner.png" alt="" /></div>
+  	  <div class="img_top"><img src="../../static/img/xin/_20190518094956.jpg" alt="" /></div>
       <div class="xin_box">
-      	  <div class="xin_box_c"><p>{{gao_zan.Count}}</p><p style="font-size:0.373333rem;">参赛艺人 </p></div>
+      	  <div class="xin_box_c"><p>{{gao_zan.Count}}</p><p style="font-size:0.373333rem;">参赛模特</p></div>
       	  <div class="xian"></div>	  
-      	  <div class="xin_box_c"><p>{{gao_zan.like_numbers}}</p><p style="font-size:0.373333rem;">累计投票 </p></div>
+      	  <div class="xin_box_c"><p>{{gao_zan.like_numbers}}</p><p style="font-size:0.373333rem;">累计点赞 </p></div>
       	  <div class="xian"></div>	  
       	  <div class="xin_box_c"><p>{{gao_zan.hits_numbers}}</p><p style="font-size:0.373333rem;">访问量 </p></div>
       </div>  
       <div class="shou_box">
-      	  <div class="inp_box"><img src="../../static/img/sousuo.png" alt="" />
+      	  <div class="inp_box">
+			  <img src="../../static/img/sousuo.png" alt="" />
       	  	   <input type="text" id="inp" @blur="to_top" placeholder="输入艺名或编号查询" />
       	  </div>
       	  <div class="data_box">
@@ -21,13 +22,13 @@
       	  <div @click="go_sign_up" class="btn">我要报名</div>
       </div> 
       
-      <div class="img_to1"><img v-for="(i,index) in gao_zan.PicList" class="img_tos" :src="i"/></div>  
+      <div class="img_to1"><img v-for="(i,index) in gao_zan.PicList" @click="img_click(index)" class="img_tos" :src="i"/></div>  
      
   <!--tab选择-->
       <div class="tab_box">
       	 <div style="width:6.16rem;height:100%;margin:0 auto;color: #FF9898;">
       	 	 <div @click="git_renqi('likes')" class="tab_box_c" :class="{tab_box_c_s:tab_nu==0}"><img src="../../static/img/jinritrenqi.png"/><p>今日人气榜</p></div>
-      	 	 <div @click="git_renqi('week ')" class="tab_box_c" :class="{tab_box_c_s:tab_nu==1}"style="float:right;"><img src="../../static/img/benzhourenqi.png"/><p>本周人气榜</p></div>	
+      	 	 <div @click="git_renqi('week')" class="tab_box_c" :class="{tab_box_c_s:tab_nu==1}"style="float:right;"><img src="../../static/img/benzhourenqi.png"/><p>本周经验值</p></div>	
       	 </div>
       </div>
   <!--参赛选手--> 
@@ -59,8 +60,7 @@ export default {
     	tab_nu:0,
     	gao_zan:'',//广告位，点赞数，总人数
     	shi:{d:'',h:'',m:'',s:''},
-    	isEnd:false,
-    	
+    	isEnd:false,	
     	home_act:[],
     	
     }
@@ -70,6 +70,12 @@ export default {
 		 that.date_deadline_at();
 	 },
   methods:{
+	  img_click(index){
+		  if(index==0){
+			     window.open('http://m.py168.com');
+			  }
+	  },
+	  
   	date_deadline_at(){//倒计时函数
   	var interval = setInterval(()=>{
 		var date = this.gao_zan.deadline_at-(new Date().getTime()/1000);
@@ -79,13 +85,13 @@ export default {
 			 this.shi.d = parseInt(date / 60 / 60 / 24);
 			 this.shi.h = parseInt(date / 60 / 60 % 24);
 			 this.shi.m = parseInt(date / 60 % 60);//计算剩余的分钟
-	  	 this.shi.s = parseInt(date % 60);//计算剩余的秒数 
+	  	     this.shi.s = parseInt(date % 60);//计算剩余的秒数 
 		  }
 	   },1000);
   	},
   	
   	like_click(id,index){//点赞
-  		axios.get('enroll-likes?id='+id+'&token='+localStorage.token).then(res=>{
+  		axios.get('wechat/enroll-likes?id='+id+'&token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
         	    	 	      console.log(res.data.data,'点赞');
         	    	 	      this.home_act[index].like_show = 1;
@@ -103,7 +109,7 @@ export default {
   	
   	git_renqi(val){
   		this.tab_nu = val=='likes'?0:1
-  		axios.get('enroll?type='+val+'&token='+localStorage.token).then(res=>{
+  		axios.get('wechat/enroll?type='+val+'&token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
         	    	 	      
         	    	 	      this.home_act = res.data.data.TidbitsList;
@@ -112,19 +118,19 @@ export default {
         	    	 	      	  this.home_act[i].like_show = 0;
         	    	 	      }
         	    	 	      
-        	    	 	      console.log( this.home_act,'周人气。今日人气');
-        	    	 	      
+        	    	 	      console.log(this.home_act,'周人气.今日人气');
         	    	  }
                 }).catch(err=>{
+					 this.git_login()
                 	 console.log(err);
                 	 this.$toast({message:'网络错误',duration:3000});
                 });
   	},
   	
   	git_guang(){
-  		  axios.get('home-page?token='+localStorage.token).then(res=>{
-        	    	  if(res.code = 200){
-        	    	 	      console.log(res.data.data,'广告位，点赞数，总人数');
+  		  axios.get('wechat/home-page?token='+localStorage.token).then(res=>{
+			          console.log(res,'广告位，点赞数，总人数');
+        	    	  if(res.data.data){
         	    	 	      this.gao_zan = res.data.data;
         	    	 	      store.state.Count = this.gao_zan.Count;
         	    	 	      store.state.like_numbers = this.gao_zan.like_numbers;
@@ -132,14 +138,35 @@ export default {
         	    	 	      window.setTimeout(()=>{
         	    	 	      	this.show1s =false;
         	    	 	      },1000)
-        	    	 	      
-        	    	  }
+        	    	  }else if(res.data.code==302){
+						  this.git_login();//执行微信登录
+					  }
                 }).catch(err=>{
                 	 console.log(err);
-                	 this.$toast({message:'网络错误',duration:3000});
+                	 // this.$toast({message:'网络错误',duration:3000});
                 });
   	},
-  	
+  	git_login(){//登录函数
+	     var len =  32;
+	     　            　     var $chars='ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+	     　　                 var maxPos = $chars.length;
+	     　　                 var pwd = '';
+	     　                    for(var i = 0; i < len; i++){
+	     　　　　                 pwd += $chars.charAt(Math.floor(Math.random()*maxPos));
+	     　　                  }
+	         localStorage.token = localStorage.token?localStorage.token:pwd;
+		 if(localStorage.token){
+			 axios.get('api/login-token?token='+localStorage.token+'&url=http://model-competition.panyu.cn/dist/#/home').then(res=>{
+			                   console.log(res,'登录结果');
+		        	    	  if(res.data.data.url){
+		        	    	 	  window.location.href = res.data.data.url;
+		        	    	  }
+		      }).catch(err=>{
+		      	 console.log(err);
+		      });
+		 }
+		 
+	},
   	
   	go_details(i){//跳转作品详情
   		 localStorage.id = i.id;
@@ -162,7 +189,7 @@ export default {
   	  token_sui(){
   	  	 var len =  32;
 　            　     var $chars='ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';/****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-　　               var maxPos = $chars.length;
+　　                 var maxPos = $chars.length;
 　　                 var pwd = '';
 　                    for(var i = 0; i < len; i++){
 　　　　                 pwd += $chars.charAt(Math.floor(Math.random()*maxPos));
@@ -172,13 +199,12 @@ export default {
   	  
   },
   mounted(){
+	  // localStorage.token = 'Ew4jcJnPpfBnKARkZ3kRhrarXcZSBnDj'
+	  
   	  this.token_sui()
-  	
   	  this.git_guang();
-  	  
   	  this.git_renqi('likes');//默认获取今日人气
-  	  
-  	  
+	  console.log(localStorage.token);
   	  window.scrollTo(0,0);  
   	  store.state.btn_show = true;
   	  store.state.bottom_1 = true;
@@ -208,7 +234,7 @@ export default {
 		margin: 0.226666rem auto;
 		
 		border-radius:0.48rem;
-		background: #F03D5E;
+		background:linear-gradient(180deg,rgba(255,127,100,1) 0%,rgba(228,50,86,1) 100%);
 		text-align: center;
 		line-height: 0.96rem;
 		font-size: 0.373333rem;
@@ -303,7 +329,7 @@ display:-webkit-flex;
 	
 	.img_to1{
 		width:9.2rem;
-		margin:0.56rem auto 0 auto;
+		margin:0.4rem auto 0 auto;
 	}
 	.img_tos{
 		width:9.2rem;
@@ -318,12 +344,14 @@ display:-webkit-flex;
         opacity:1;
         border-radius:0.133333rem;
         margin: auto;
-        margin-top: 0.4rem;
+        margin-top:0.2rem;
         text-align: center;
         line-height: 0.96rem;
         font-size: 0.373333rem;
         color: white;
         font-weight: 600;
+		float: right;
+		margin-right: 0.493333rem;
 	}
 	.data_box_c2 a{
 		font-size: 0.426666rem;
@@ -337,6 +365,7 @@ display:-webkit-flex;
 		color: #585858;
 		line-height: 0.6rem;
 		font-size: 0.293333rem;
+		margin-left:0.353333rem;
 	}
 	.data_box_c1 p{
 		float: left;
@@ -345,7 +374,7 @@ display:-webkit-flex;
 		width: 0.346666rem;
 		height: 0.44rem;
 		float: left;
-		margin-left: 2.733333rem;
+		margin-left: 0.893333rem;
 		margin-right: 0.226666rem;
 	}
 	.data_box_c1{
@@ -358,11 +387,12 @@ display:-webkit-flex;
 		margin-bottom: 0.306666rem;
 	}
 	.data_box{
-		width: 100%;
-		height: 1.946666rem;
-		background: #F1F1F1;
+		width: 5.5rem;
+		height: 1.746666rem;
+		/* background: #F1F1F1; */
 		text-align: center;
-		padding-top: 0.306666rem;
+		float: left;
+		/* padding-top: 0.306666rem; */
 	}
 	.inp_box input{
 		width: 3.36rem;
@@ -389,11 +419,11 @@ display:-webkit-flex;
 	
 	.shou_box{
 		width:9.2rem;
-height:4.84rem;
+height:2.84rem;
 background:rgba(255,255,255,1);
 opacity:1;
 border-radius:0.266666rem;
-      margin: 0.4rem auto;
+      margin: 0.4rem auto 0 auto;
       overflow: hidden;
      
 	}
@@ -427,11 +457,11 @@ border-radius:0.266666rem;
 	}
 	.img_top img{
 		width: 100%;
-		height: 5.186666rem;
+		height:100%;
 	}
 	.img_top{
 		width: 100%;
-		height:4.8rem;
+		height:6.6rem;
 		overflow: hidden;
 		
 	}

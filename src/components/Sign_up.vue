@@ -2,8 +2,8 @@
   <!--报名-->
   <div id="hello" style="width:100%;background:linear-gradient(135deg,rgba(228,50,86,1) 0%,rgba(255,127,100,1) 100%);padding-bottom:1.426666rem;">
      <div class="top_box">
-     	  <div class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.Count}}</p><p style="font-size:0.373333rem;">参赛艺人</p></div>
-        <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.like_numbers}}</p><p style="font-size:0.373333rem;">累计投票</p></div>
+     	  <div class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.Count}}</p><p style="font-size:0.373333rem;">参赛模特</p></div>
+        <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.like_numbers}}</p><p style="font-size:0.373333rem;">累计点赞</p></div>
         <div style="margin-left:1.72rem;" class="top_box_c"><p style="font-size:0.426666rem;font-weight:600;">{{$store.state.hits_numbers}}</p><p style="font-size:0.373333rem;">访问量</p></div>
      </div>
      <div class="nai_box">
@@ -11,7 +11,7 @@
      	   
      	   <div class="inp_a"><div class="name"><p>艺名：</p></div><input v-model="stage_name" type="text" placeholder="请输入艺名"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>年龄：</p></div><input v-model="age" type="number" maxlength="2" placeholder="请输入年龄"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>年龄：</p></div><input v-model="age" type="number"  placeholder="请输入年龄"/><a>*</a></div>
      	   
      	   <div class="inp_a"><div class="name"><p>性别：</p></div>
      	     <div @click="sexa=0" style="margin-right:0.4rem;" :class="{sexs:sexa==0,sex:sexa!=0}">男</div>
@@ -20,7 +20,7 @@
      	   
      	   <div class="inp_a"><div class="name"><p>真实身高：</p></div><input v-model="x_height" type="number" placeholder="请输入身高 CM"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>三围：</p></div><input v-model="Three_dimensions" type="number" maxlength="2" placeholder="请输入三围 CM"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>三围：</p></div><input v-model="Three_dimensions" type="text" placeholder="胸围-腰围-臀围 CM"/><a>*</a></div>
    <!--上传头像-->  	   
      	   <div class="inp_a" style="height:1.393333rem;"><div class="name"><p>头像：</p></div>
      	      <div class="img1">
@@ -33,7 +33,7 @@
      	   </div>
    	
    <!--上传图片-->  	   
-     	   <div class="inp_a" style="height:1.393333rem;"><div class="name"><p>形象照：</p></div>
+     	   <div class="inp_a" style="height:1.393333rem;"><div class="name"><p>全身照：</p></div>
      	      <div class="img1">
      	      	<div @click="lan_img(1)" style="width: 100%;height: 100%;overflow: hidden;">
      	      		<img class="feng" :src="img_url1" /></div>
@@ -41,19 +41,19 @@
      	      	  <img @click="x_img(1)" v-show="inp1_show==false" class="xa" src="../../static/img/guanx.png" />
      	      </div>
      	      
-     	      <div class="img1" style="margin-left:0.266666rem;">
+     	      <!-- <div class="img1" style="margin-left:0.266666rem;">
      	      	<div @click="lan_img(2)" style="width: 100%;height: 100%;overflow: hidden;">
      	      		<img class="feng" :src="img_url2" /></div>
      	      	  <van-uploader v-show='inp1_show2' class='inp1' :after-read="onRead2"></van-uploader> 
      	      	  <img @click="x_img(2)" v-show="inp1_show2==false" class="xa" src="../../static/img/guanx.png" />
-     	      </div>
+     	      </div> -->
      	      <a>*</a>
      	   </div>
- <!--上传视频----------------------------------------------------------------------------------------------------> 	   
+ <!--上传视频。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。 --> 	   
      	   <div class="inp_a" style="height:1.393333rem;">
-     	   	  <div class="name"><p>小于100M视频：</p></div>
+     	   	  <div class="name"><p>小于30M视频：</p></div>
      	      <div class="img1">
-     	      	<div @click="video_shows=true" style="width: 100%;height:100%;overflow:hidden;position:relative;">
+     	      	<div @click="video_shows=true" style="width:100%;height:100%;overflow:hidden;position:relative;">
      	      		<img class="feng" :src="videoimg" />
      	      		<img class="bo" v-show="video_show==false" src="../../static/img/bofanganniu.png" alt="" />
      	      	</div>
@@ -61,11 +61,11 @@
      	      	  <img @click="video_x" v-show="video_show==false" class="xa" src="../../static/img/guanx.png" />
      	      </div>
      	      <a>*</a>
- <!--视频预览-----------------------------------------------------------------------------------------------------> 	    	      
+ <!-- 视频预览 -->
      	     <mu-fade-transition>
      	  	  	 	   <div @click="video_shows=false" v-show="video_shows" style="width:100%;height:100%;position:fixed;background:rgba(0,0,0,.5);z-index:300;top: 0;left: 0;">
      	  	  	 	  	  <mu-slide-top-transition>
-                         <video class="video" v-show="video_shows" id="video" ref="video" controls="controls" webkit-playsinline='true' playsinline='true'></video>
+                         <video class="video" preload="auto" v-show="video_shows" id="video" ref="video" controls="controls" webkit-playsinline='true' playsinline='true'></video>
                      </mu-slide-top-transition>
      	  	  	 	   </div>
            </mu-fade-transition>  
@@ -73,22 +73,22 @@
      	  
      	   <div class="inp_a"><div class="name"><p>微信号：</p></div><input v-model="wxid" type="text" placeholder="请输入微信号"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>抖音号：</p></div><input v-model="dyid" type="text" placeholder="请输入抖音号"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>抖音、快手号：</p></div><input v-model="dyid" type="text" placeholder="请输入抖音号"/></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>微博：</p></div><input v-model="vb_name" type="text" placeholder="请输入微博名"/><a>*</a></div>
+     	   <!-- <div class="inp_a"><div class="name"><p>微博：</p></div><input v-model="vb_name" type="text" placeholder="请输入微博名"/><a>*</a></div> -->
      	  
      	   <div class="inp_a"><div class="name"><p>手机号码：</p></div><input v-model="x_iphone" max-length="11" type="number" placeholder="请输入手机号码"/><a>*</a></div>
      	   
      	   <div class="inp_a"><div class="name"><p>现居城市：</p></div><input v-model="Current_city" type="text" placeholder="请输入现居城市"/><a>*</a></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>就读/毕业院校：</p></div><input v-model="graduated_school" type="text"  placeholder="请输入就读/毕业院校"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>就读/毕业院校：</p></div><input v-model="graduated_school" type="text"  placeholder="请输入就读/毕业院校"/></div>
      	   
-     	   <div class="inp_a"><div class="name"><p>兴趣特长/荣誉：</p></div><input v-model="interest" type="text"  placeholder="兴趣特长/荣誉"/><a>*</a></div>
+     	   <div class="inp_a"><div class="name"><p>兴趣特长/荣誉：</p></div><input v-model="interest" type="text"  placeholder="兴趣特长/荣誉"/></div>
      	   
      	  
-     	   <div class="inp_a" style="height:2.68rem;"><div class="name"><p>个人简介：</p></div>
+     	   <!-- <div class="inp_a" style="height:2.68rem;"><div class="name"><p>个人简介：</p></div>
      	         <textarea type="text" v-model="Personal_profile"  placeholder="请输入个人简介"/><a>*</a>
-     	   </div>
+     	   </div> -->
      	   
      	   <p class="bto_p">（带*号为必填，所有隐私信息不公开）</p>
      	   
@@ -101,7 +101,6 @@
      <van-popup v-model="show1s"><van-loading type="spinner" /></van-popup>
      
      <div class="xuan_xiang_box_c"></div>
-     
      
      <van-popup v-model="showa" position="bottom" :overlay="false">
           <div class="dala">
@@ -121,7 +120,19 @@
       :stroke-width='60'
       /> 
     </van-popup> 
-     
+	
+<!-- 报名成功弹出 -->    
+	<van-popup v-model="pub_show">
+		<div class="tan_box">
+			<p>报名成功</p>
+			<div class="img_boxx"><img :src="er_url"></div>
+			<p style="font-size:0.303333rem;color:#585858">
+                   {{stage_name}}，欢迎您！请扫码进比赛群。</p>
+			<div @click="guan_box" class="xbtn">关闭</div>
+		</div>
+	</van-popup>
+	
+	
   </div>
 </template>
 
@@ -138,6 +149,9 @@ export default {
   
   data () {
     return {
+		er_url:'',
+		pub_show:false,
+		
     	login:false,//进度条显示隐藏
     	currentRate:0,
     	login_nub:0,
@@ -191,10 +205,24 @@ export default {
     
   },
   methods:{
+	  guan_box(){
+		   this.pub_show=false;
+		   router.push({path:'./home'})
+		  },
   	go_click(){//点击提交按钮
-  		  
-  		  	
-  		  if(this.img_id3!=''&&this.video_id!=''&&this.img_url1_s!=''&&this.img_url2_s!=''&&this.x_name!=''&&this.stage_name!=''&&this.age!=''&&this.x_height!=''&&this.Three_dimensions!=''&&this.wxid!=''&&this.dyid!=''&&this.vb_name!=''&&this.x_iphone!=''&&this.Current_city!=''&&this.graduated_school!=''&&this.interest!=''&&this.Personal_profile!=''){
+  		  console.log(this.img_id3);
+		  console.log(this.video_id)
+		  console.log(this.img_url1_s);
+		  console.log(this.x_name)
+		  console.log(this.stage_name);
+		  console.log(this.age)
+		  console.log(this.x_height);
+		  console.log(this.Three_dimensions)
+		  console.log(this.wxid)
+		  console.log(this.x_iphone);
+		  console.log(this.Current_city);
+		  
+  		  if(this.img_id3!=''&&this.video_id!=''&&this.img_url1_s!=''&&this.x_name!=''&&this.stage_name!=''&&this.age!=''&&this.x_height!=''&&this.Three_dimensions!=''&&this.wxid!=''&&this.x_iphone!=''&&this.Current_city!=''){
   		  	if(this.gou_show){
 //		  		
 		   var result = [];
@@ -207,7 +235,7 @@ export default {
 		  	
   		  	axios({
             method:"post",
-            url:"enroll-save",
+            url:"wechat/enroll-save",
             contentType:"application/json;charset=UTF-8",
             dataType:"json",
             data:{
@@ -225,7 +253,7 @@ export default {
                schools:this.graduated_school,
                pic:this.img_id3,
                front_pic:this.img_url1_s,
-               cover_pic:this.img_url2_s,
+               cover_pic:'',
                url:this.video_id,
                tik_tok:this.dyid,
                weibo:this.vb_name,
@@ -235,16 +263,16 @@ export default {
             }).then(res=>{
             	     console.log(res.data);
             	    if(res.data.code = 200){
-        	    	 	   this.$toast.success({
-        	                       message:'发布成功',
-        	                       duration:2000
-        	                 });
-        	          window.setTimeout(()=>{
-        	          	router.push({
-  	   	                  path:'./home',
-  	                  });
-        	          },1000);
-        	    	  }  
+						if(res.data.msg=='报名成功'){
+							console.log(res,'报名成功');
+							this.er_url=res.data.data.qrcode;
+							this.pub_show = true;
+							// this.$toast.success({message:'报名成功',duration:2000});
+        	               // window.setTimeout(()=>{router.push({path:'./home'});},1000);
+						}else{
+							this.$toast.success({message:res.data.msg,duration:3000});
+						}
+        	    	   } 
              }).catch(err=>{
                       console.log(err);
                        this.$toast({
@@ -262,7 +290,7 @@ export default {
     PostFile(file,i,num){
         var name = file.name,                          //文件名
             size = file.size,                          //总大小shardSize = 2 * 1024 * 1024,
-            shardSize = 1024*512,                //以?MB为一个分片,每个分片的大小
+            shardSize = 324*512,                //以?MB为一个分片,每个分片的大小
             shardCount = Math.ceil(size / shardSize);  //总片数
             console.log(shardCount,'视频分成几次上传')
         if(i > shardCount){
@@ -275,7 +303,7 @@ export default {
         	//最后一次上传，而外加一个参数
 //      	var fd = {'filename':name,'chunks':shardCount,'act':'combine'},
         	 $.post(
-            'http://store.kuntopic.com/upload-file',
+            'http://model-competition.panyu.cn/upload-file',
             {"act":"combine","chunks":shardCount,"filename":name},
              e=>{
                 if(e.flag){
@@ -295,7 +323,7 @@ export default {
                 	 }else if(num==4){
                 	 	 this.$refs.video.src = e.url;
                 	   this.video_show = false;
-                	   this.videoimg = 'static/img/banner.928342a.png'
+                	   this.videoimg = 'static/img/banner.png'
                 	   this.video_id = e.url;
                 	 }
                 	  window.setTimeout(()=>{this.login_nub = 0;},1000);
@@ -318,7 +346,7 @@ export default {
            fd.append("chunk", i); //当前是第几片
         
         axios({
-            url:"http://store.kuntopic.com/upload-file",
+            url:"http://model-competition.panyu.cn/upload-file",
             method:"post",
             data: fd,
             cache: false,
@@ -348,7 +376,7 @@ export default {
   	
   
   	git_ac(){
-  		  axios.get('guide?token='+localStorage.token).then(res=>{
+  		  axios.get('wechat/guide?token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
         	    	 	      console.log(res.data);
         	    	 	      this.act = res.data.data
@@ -445,10 +473,6 @@ export default {
   	 },
   	
   	
-  	
-  	
-  	
-  	
   },
   mounted(){
   	this.git_ac()
@@ -471,6 +495,39 @@ export default {
 </script>
 
 <style scoped>
+	.img_boxx img{
+		width: 100%;
+		height: 100%;
+	}
+	.xbtn{
+		width: 2.333333rem;
+		height:0.96rem;
+		background:linear-gradient(180deg,rgba(255,127,100,1) 0%,rgba(228,50,86,1) 100%);
+		border-radius:0.48rem;
+		
+		margin: auto;
+		margin-top: 0.266666rem;
+		text-align: center;
+		color: white;
+		line-height: 0.96rem;
+	}
+	.img_boxx{
+		width: 3rem;
+		height: 3rem;
+		margin: 0.266666rem auto;
+		background: red;
+	}
+	.tan_box{
+		width: 6rem;
+		height: 7rem;
+		background: white;
+		border-radius: 0.306666rem;
+		text-align: center;
+		font-size: 0.4rem;
+		padding: 0 0.606666rem;
+		padding-top: 0.266666rem;
+		
+	}
 	.xu_zhi{
 		 width:8.826666rem;
 height:0.96rem;

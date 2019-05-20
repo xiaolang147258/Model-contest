@@ -52,7 +52,7 @@ export default {
   },
   methods:{
   	git_ac(){
-  		  axios.get('constitution?token='+localStorage.token).then(res=>{
+  		  axios.get('wechat/constitution?token='+localStorage.token).then(res=>{
         	    	  if(res.code = 200){
         	    	 	      console.log(res.data);
         	    	 	      this.act = res.data.data

@@ -38,7 +38,7 @@ export default {
   },
   methods:{
   	git_act(){
-  		 axios.get('tidbits?token='+localStorage.token).then(res=>{
+  		 axios.get('wechat/tidbits?token='+localStorage.token).then(res=>{
         	    	  if(res.status = 200){
         	    	 	      console.log(res.data.data.TidbitsList)
         	    	 	      this.active = res.data.data.TidbitsList;
