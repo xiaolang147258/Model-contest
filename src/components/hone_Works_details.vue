@@ -47,16 +47,14 @@
 		
      <!-- 评论组件 -->
 		<van-popup v-model="pin_show1">
-			
 			 <mu-scale-transition>
                    <div class="pin" v-show="pin_show2">
 					<p>填写评论 :</p>
 				    <textarea id="text" onkeydown="if(event.keyCode==32||event.keyCode==13){return false;}" v-model="text_val" placeholder="发布评论，最多输入200个字符" maxlength="200"></textarea> 	  
-					  <mu-button @click='pin_show1=false;pin_show2=false' style='background:#FFDF63;margin-left:0.966666rem;' class='btn' >关闭</mu-button>
+					  <mu-button @click='guan' style='background:#FFDF63;margin-left:0.966666rem;' class='btn' >关闭</mu-button>
                       <mu-button @click='go_pin' style='float: right;margin-right:0.966666rem;' class='btn' >发布评论</mu-button>
 				   </div>
              </mu-scale-transition>
-			
 		</van-popup>
 		
 		
@@ -102,6 +100,12 @@ export default {
     }
   },
   methods:{
+	  guan(){
+		  this.pin_show1=false;
+		  this.pin_show2=false;
+		  $('.video').show();
+	  },
+	  
     go_pin(){//执行点评事件
 	  if(this.text_val!=''){
 		                      var len =  6;
@@ -118,6 +122,7 @@ export default {
 			    	 	      this.$toast({message:'评论成功！',duration:3000});
 							  this.pin_show2 = false; this.pin_show1 = false;this.text_val = '';
 							  this.commit_box = res.data.data.Comment;
+							  $('.video').show();
 			    	  }else{
 			    	  	   this.$toast({message:res.data.msg,duration:3000});
 			    	  }
@@ -136,6 +141,7 @@ export default {
 		window.setTimeout(()=>{
 			this.pin_show2 = true;
 		},300)
+		$('.video').hide();
 	},	  
 	  
   	like_click(){

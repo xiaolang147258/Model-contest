@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
          "/":{
-            target:'http://model-competition.panyu.cn',//你接口的域名
+            target:'',//你接口的域名
             changeOrigin: true,
             pathRewrite: {
                 '^/': '/'

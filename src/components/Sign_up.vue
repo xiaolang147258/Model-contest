@@ -127,7 +127,7 @@
 			<p>报名成功</p>
 			<div class="img_boxx"><img :src="er_url"></div>
 			<p style="font-size:0.303333rem;color:#585858">
-                   {{stage_name}}，欢迎您！请扫码进比赛群。</p>
+                   {{up_id}}+{{stage_name}}，欢迎您！请扫码进比赛群。</p>
 			<div @click="guan_box" class="xbtn">关闭</div>
 		</div>
 	</van-popup>
@@ -195,6 +195,8 @@ export default {
     	Personal_profile:'',//个人简介
     	
     	gou_show:false,//打钩选项，默认false
+		
+		up_id:'',
     	
     }
   },
@@ -266,6 +268,7 @@ export default {
 						if(res.data.msg=='报名成功'){
 							console.log(res,'报名成功');
 							this.er_url=res.data.data.qrcode;
+							this.up_id = res.data.data.enroll_id;
 							this.pub_show = true;
 							// this.$toast.success({message:'报名成功',duration:2000});
         	               // window.setTimeout(()=>{router.push({path:'./home'});},1000);
@@ -303,7 +306,7 @@ export default {
         	//最后一次上传，而外加一个参数
 //      	var fd = {'filename':name,'chunks':shardCount,'act':'combine'},
         	 $.post(
-            'http://model-competition.panyu.cn/upload-file',
+            '/upload-file',
             {"act":"combine","chunks":shardCount,"filename":name},
              e=>{
                 if(e.flag){
@@ -346,7 +349,7 @@ export default {
            fd.append("chunk", i); //当前是第几片
         
         axios({
-            url:"http://model-competition.panyu.cn/upload-file",
+            url:"/upload-file",
             method:"post",
             data: fd,
             cache: false,

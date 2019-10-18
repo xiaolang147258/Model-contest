@@ -102,7 +102,7 @@ export default {
         	    	  }
                 }).catch(err=>{
                 	 console.log(err);
-                	 this.$toast({message:'网络错误',duration:3000});
+                	 this.$toast({message:'加载中',duration:3000});
                 });
   	},
   	
@@ -123,7 +123,7 @@ export default {
                 }).catch(err=>{
 					 this.git_login()
                 	 console.log(err);
-                	 this.$toast({message:'网络错误',duration:3000});
+                	 this.$toast({message:'加载中',duration:3000});
                 });
   	},
   	

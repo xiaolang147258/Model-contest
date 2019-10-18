@@ -80,7 +80,7 @@ export default {
 //         $("#hello").css('height',a)
 //         $("#hello").fadeToggle()
 //	    },500)
-	    
+	   $('.p_box img').css('width','100%');
   },
   
 }
@@ -90,10 +90,14 @@ export default {
 	.p_c{
 		  margin-top:0.266666rem ;
 	}
+	.p_box p img{
+		width: 100%;
+		height: auto;
+	}
 	.p_box{
 		 font-size: 0.346666rem;
 		 color: #585858;
-		 text-align:justify;
+		 /* text-align:justify; */
 		 line-height:0.506666rem;
 		 font-family:MingHei;
 		 margin-top: 0.266666rem;

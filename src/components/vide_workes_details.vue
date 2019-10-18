@@ -13,7 +13,6 @@
 				<video  class="video" :src="act.url" type="video/mp4" controls="controls" webkit-playsinline='true' playsinline='true'></video>
 			</div>
         	
-        	
         </div>
         
       <div class="btn_box">
@@ -39,7 +38,6 @@ export default {
     return {
     	show1s:true,
     	act:'',
-    	
     	
     }
   },
